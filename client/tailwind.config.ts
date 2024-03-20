@@ -10,12 +10,14 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        lato: ["Lato", "sans-serif"]
+        lato: ["Lato", "sans-serif"],
+        montserat: ["Montserrat", "sans-serif"]
       },
       colors: {
         cgreen: {
           300: "#2ef491",
-          500: "#02DE86"
+          500: "#02DE86",
+          600: "#27D17C"
         }
       }
     },
