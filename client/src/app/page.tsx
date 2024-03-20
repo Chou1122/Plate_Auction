@@ -2,7 +2,7 @@ import Image from "next/image";
 import Bg_img from "@/assets/bg_top.svg"
 import Nav from "./components/nav";
 import Social from "./components/social";
-import Event from "./components/event";
+import EventPanel from "./components/event";
 import Footer from "./components/footer";
 
 export default function Homepage() {
@@ -35,7 +35,7 @@ export default function Homepage() {
           </div>
 
           <div className="2xl:absolute right-16">
-            <Event />
+            <EventPanel />
           </div>
         </div>
       </main>

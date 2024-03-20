@@ -2,7 +2,7 @@ import Link from "next/link";
 import { IoFlame } from "react-icons/io5";
 import Card from "../card";
 
-export default function Event() {
+export default function EventPanel() {
     return (
         <div className="rounded-xl shadow-2xl p-10 bg-white border border-gray-200">
             <div className="flex flex-row gap-10 justify-between">

@@ -2,16 +2,18 @@ import { Button as Button_ } from 'flowbite-react';
 import type { ButtonProps, CustomFlowbiteTheme } from 'flowbite-react';
 
 const customTheme: CustomFlowbiteTheme['button'] = {
+    base: "px-2 py-1 rounded-full hover:-translate-y-1 transition-all hover:shadow-xl font-montserat",
     color: {
-        primary: 'bg-blue-900 hover:bg-blue-950 text-white font-lato font-semibold',
+        primary: 'bg-cgreen-600 text-white hover:bg-cgreen-500 shadow-green-300/35',
+        dark: "bg-blue-950 text-white hover:bg-blue-800 shadow-blue-300/35"
     },
 };
 
 interface IProps extends ButtonProps { }
 
-export default function Button({ children }: IProps) {
+export default function Button({ children, ...rest }: IProps) {
     return (
-        <Button_ theme={customTheme} color={"primary"}>
+        <Button_ theme={customTheme} pill {...rest} >
             {children}
         </Button_>
     )
