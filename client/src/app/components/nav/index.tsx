@@ -2,7 +2,7 @@ import Link from "next/link";
 import Logo from "../logo";
 import { MdEmail } from "react-icons/md";
 import { IoCall } from "react-icons/io5";
-import Button from "../button";
+import Button from "../form/button";
 import { IoMdMenu } from "react-icons/io";
 import HoverLink from "./components/link";
 
@@ -20,7 +20,7 @@ export default function Nav() {
                     <HoverLink href="" name="Result" />
                 </div>
 
-                <div className="hidden lg:flex gap-2 bg-white rounded-full px-1 py-1">
+                <div className="social hidden lg:flex gap-2 bg-white rounded-full px-1 py-1">
                     <Link className="text-cgreen-500 transition-all hover:bg-cgreen-600 hover:text-blue-950 p-2 rounded-full" href={""}>
                         <MdEmail size={24} />
                     </Link>

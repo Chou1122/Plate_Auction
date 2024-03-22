@@ -10,8 +10,8 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        lato: ["Lato", "sans-serif"],
-        montserat: ["Montserrat", "sans-serif"]
+        lato: ["var(--font-lato)"],
+        montserat: ["var(--font-montserat)"]
       },
       colors: {
         cgreen: {
@@ -20,7 +20,7 @@ const config: Config = {
           600: "#27D17C"
         }
       }
-    },
+    }
   },
   plugins: [
     require('flowbite/plugin'),
