@@ -29,9 +29,9 @@ export default function EventPanel() {
             </div>
 
             <div className="flex gap-4 mt-10 flex-wrap justify-center group/card">
-                <Card enable_blur pin/>
-                <Card enable_blur pin/>
-                <Card enable_blur pin/>
+                <Card enable_blur pin />
+                <Card enable_blur pin />
+                <Card enable_blur pin />
             </div>
         </div>
     )
