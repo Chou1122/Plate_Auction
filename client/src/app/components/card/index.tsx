@@ -1,14 +1,17 @@
 import Link from "next/link";
+import { FaCar } from "react-icons/fa";
 import { ImLeaf } from "react-icons/im";
 import { IoIosTime } from "react-icons/io";
 import { IoHeart, IoWallet } from "react-icons/io5";
+import { MdOutlineMyLocation } from "react-icons/md";
 
 interface IProps {
     like?: boolean,
     enable_blur?: boolean
+    pin?: boolean
 }
 
-export default function Card({ like, enable_blur }: IProps) {
+export default function Card({ like, enable_blur, pin }: IProps) {
     return (
         <div
             className={
@@ -16,7 +19,16 @@ export default function Card({ like, enable_blur }: IProps) {
                 (enable_blur ? "[&:not(:hover)]:group-hover/card:blur" : "")
             }>
             <div className="flex justify-between">
-                <span className="px-3 py-1 rounded-full bg-red-100 text-red-500 font-semibold before:h-2 before:w-2 before:rounded-full flex items-center before:block before:bg-red-500 before:mr-2 text-sm">Live</span>
+                <div className="flex gap-2">
+                    {
+                        pin &&
+                        <span className="px-3 py-1 rounded-full bg-red-100 text-red-500 font-semibold before:h-2 before:w-2 before:rounded-full flex items-center before:block before:bg-red-500 before:mr-2 text-sm">Live</span>
+                    }
+
+                    <span className="px-3 py-1 rounded-full bg-green flex items-center text-green-400 bg-green-100 text-sm font-semibold">
+                        <ImLeaf className="mr-2" /> Tam hoa
+                    </span>
+                </div>
 
                 <button className={(like ? "text-red-500" : "text-gray-300") + ""}>
                     <IoHeart size={24} />
@@ -30,15 +42,40 @@ export default function Card({ like, enable_blur }: IProps) {
                 </div>
             </div>
 
-            <div className="flex flex-row justify-between my-5 px-2">
-                <span className="flex items-center text-gray-300"><IoIosTime className="mr-2" /> 2:15 </span>
-                <span className="flex items-center text-gray-300"><ImLeaf className="mr-2" /> Tam hoa </span>
+            <div className={(pin ? "" : "flex flex-col-reverse") + " px-2"}>
+                <div className={(pin ? "my-5" : "my-1")}>
+                    <div className={"flex flex-row justify-between "}>
+                        <span className="flex items-center text-gray-300 text-sm">
+                            <IoIosTime className="mr-2" /> 2:15
+                        </span>
+                        <span className="flex items-center text-gray-300 text-sm">
+                            <FaCar className="mr-2" /> Xe con
+                        </span>
+                    </div>
+                    <div className="flex gap-2 font-semibold text-blue-500 text-sm max-w-36">
+                        <Link href={""} className="hover:underline truncate max-w-20 flex-none">#hanoinoioi</Link>
+                        <Link href={""} className="hover:underline truncate max-w-20 flex-none">#ngu</Link>
+                        <Link href={""} className="hover:underline truncate max-w-20 shrink">#tamhoa</Link>
+                    </div>
+                </div>
+
+
+                {pin
+                    ? <Link href={""} className="bg-blue-100 flex flex-row items-center text-blue-950 text-xl font-extrabold px-4 py-2 rounded-lg group-hover:bg-blue-950 group-hover:text-white transition-all">
+                        <span className="mr-4"><IoWallet /></span>
+                        150.000.000
+                    </Link>
+
+                    : <div>
+                        <span className="text-sm text-gray-300 flex items-center">
+                            <MdOutlineMyLocation className="mr-2" /> Add
+                        </span>
+                        <span className="font-semibold text-blue-950">
+                            Thành phố Hà Nội
+                        </span>
+                    </div>}
             </div>
 
-            <Link href={""} className="bg-blue-100 flex flex-row items-center text-blue-950 text-xl font-extrabold px-4 py-2 rounded-lg group-hover:bg-blue-950 group-hover:text-white transition-all">
-                <span className="mr-4"><IoWallet /></span>
-                150.000.000
-            </Link>
         </div>
     )
 }
