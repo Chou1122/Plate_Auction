@@ -6,18 +6,18 @@ import Button from "../form/button";
 import { IoMdMenu } from "react-icons/io";
 import HoverLink from "./components/link";
 
-export default function Nav() {
+export default function Nav({ changeColor }: { changeColor?: boolean }) {
     return (
-        <nav className="flex justify-between items-start">
+        <nav className="flex justify-between items-center">
             <Link href={""}>
                 <Logo />
             </Link>
 
             <div className="flex flex-row gap-5 lg:gap-10 font-montserat font-bold text-blue-950 text-lg items-center">
                 <div className="hidden lg:flex gap-10">
-                    <HoverLink href="" name="Upcoming" />
-                    <HoverLink href="" name="Ongoing" />
-                    <HoverLink href="" name="Result" />
+                    <HoverLink href="" name="Upcoming" changeColor={changeColor} />
+                    <HoverLink href="" name="Ongoing" changeColor={changeColor} />
+                    <HoverLink href="" name="Result" changeColor={changeColor} />
                 </div>
 
                 <div className="social hidden lg:flex gap-2 bg-white rounded-full px-1 py-1">
@@ -29,9 +29,7 @@ export default function Nav() {
                     </Link>
                 </div>
 
-                <Button color={"dark"}>
-                    Sign up
-                </Button>
+                <Button color={"dark"} title="Sign up" />
 
                 <button className="block lg:hidden hover:bg-white p-3 rounded-full text-xl">
                     <IoMdMenu />
