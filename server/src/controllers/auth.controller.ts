@@ -3,7 +3,7 @@ import TokenModel from "@/models/token.model";
 import { Request, Response } from "@/types/controller";
 import handleError from "@/utils/handle_error";
 import { generateToken, setToken } from "@/utils/token";
-import AuthValidator, { LoginBody } from "@/validators/auth.validator";
+import AuthValidator, { LoginBody, LogoutBody } from "@/validators/auth.validator";
 
 export default class AuthController {
     static login(req: Request, res: Response) {
@@ -27,12 +27,13 @@ export default class AuthController {
     }
 
     static logout(req: Request, res: Response) {
-        const data = <LoginBody>req.body;
+        const data = <LogoutBody>req.body;
 
         handleError(res, async () => {
             AuthValidator.validateLogout(data);
             const { user, device } = res.locals;
-
+            console.log(res.locals);
+            
             await TokenModel.removeDevice(user.id, device);
             setToken(res, false, null);
         });

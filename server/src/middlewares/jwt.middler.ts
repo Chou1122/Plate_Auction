@@ -3,6 +3,7 @@ import * as jwt from "jsonwebtoken";
 import config from "@/configs/env";
 import { checkRWT } from "./rwt.middler";
 import TokenModel from "@/models/token.model";
+import { IToken } from "@/utils/token";
 
 interface ICheckJWT {
     tokenOn?: "query" | "cookie"
@@ -10,13 +11,13 @@ interface ICheckJWT {
 
 export async function checkJWT(this: ICheckJWT | void, req: Request, res: Response, next: NextFunction) {
     const token = this && this.tokenOn === "query"
-        ? <string>req.query.token
-        : <string>req.cookies.token;
+        ? <IToken>req.query.token
+        : <IToken>req.cookies.token;
 
     if (!token) return res.sendStatus(401);
 
     try {
-        const { device, user, ...rest } = <ILocalData>jwt.verify(token, config.JWT_KEY);
+        const { device, user, ...rest } = <ILocalData>jwt.verify(token.token, config.JWT_KEY);
 
         if (TokenModel.hasDevice(user.id, device)) {
             res.locals = { user, device, ...rest }
