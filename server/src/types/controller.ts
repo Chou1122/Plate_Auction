@@ -3,10 +3,13 @@ import { Response as _Response, Request as _Request, NextFunction as _NextFuncti
 export interface IUser {
     fullname: string;
     role: string;
+    id: string;
 }
 
 export interface ILocalData<T extends IUser = IUser> {
-    user: T
+    user: T,
+    device: string;
+    remember: boolean
 }
 
 export interface IResponseData {

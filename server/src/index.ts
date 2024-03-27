@@ -1,4 +1,4 @@
-import express, {  Request, Response } from "express";
+import express from "express";
 import { createServer } from "node:http";
 
 import dotenv from "dotenv";
@@ -8,6 +8,7 @@ import cookieParser from 'cookie-parser';
 
 import config from "./configs/env";
 import route from "./routes";
+import * as redis from "./configs/redis";
 
 dotenv.config();
 
@@ -29,7 +30,7 @@ route(app);
 // Start server
 if (require.main === module) {
   server.listen(port, async () => {
-    // await redis.startup();
+    await redis.startup();
     console.log("📕 [redis]: Connected to redis");
     // await database.connect();
     console.log("📒 [mongo]: Connected to mysql");

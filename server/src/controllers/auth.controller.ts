@@ -1,4 +1,5 @@
 import { AuthModel } from "@/models/auth.model";
+import TokenModel from "@/models/token.model";
 import { Request, Response } from "@/types/controller";
 import handleError from "@/utils/handle_error";
 import { generateToken, setToken } from "@/utils/token";
@@ -10,10 +11,12 @@ export default class AuthController {
 
         handleError(res, async () => {
             AuthValidator.validateLogin(data);
-
             const user = await AuthModel.verifyLogin(data.email, data.password);
+
             if (user) {
-                setToken(res, data.remember, generateToken(user, true));
+                await TokenModel.addDevice(user.id, data.device);
+                const token = generateToken({ user, device: data.device, remember: data.remember });
+                setToken(res, data.remember, token);
             } else {
                 res.status(401).json({
                     message: "Invalid email/phone or password",
@@ -21,5 +24,17 @@ export default class AuthController {
                 })
             }
         })
+    }
+
+    static logout(req: Request, res: Response) {
+        const data = <LoginBody>req.body;
+
+        handleError(res, async () => {
+            AuthValidator.validateLogout(data);
+            const { user, device } = res.locals;
+
+            await TokenModel.removeDevice(user.id, device);
+            setToken(res, false, null);
+        });
     }
 }

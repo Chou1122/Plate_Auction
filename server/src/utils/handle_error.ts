@@ -12,7 +12,9 @@ export default async function handleError<T = void>(res: Response, func: () => P
                 data: error.value
             });
         } else {
-            res.sendStatus(500);
+            res.status(500).json({
+                message: error.message
+            });
         }
     }
 }

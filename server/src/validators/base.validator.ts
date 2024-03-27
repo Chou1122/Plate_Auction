@@ -14,4 +14,9 @@ export default abstract class Validator {
         if (!passwordRegex.test(password))
             throw new InputError("Invalid password pattern", "password", password);
     }
+
+    protected static checkEmpty(text: string, name: string = "text") {
+        if (!text || text.trim().length === 0)
+            throw new InputError("Invalid empty string", name, text);
+    }
 }
