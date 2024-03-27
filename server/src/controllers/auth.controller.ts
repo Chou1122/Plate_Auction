@@ -4,7 +4,7 @@ import handleError from "@/utils/handle_error";
 import { generateToken, setToken } from "@/utils/token";
 import AuthValidator, { LoginBody } from "@/validators/auth.validator";
 
-class AuthController {
+export default class AuthController {
     static login(req: Request, res: Response) {
         const data = <LoginBody>req.body;
 
@@ -13,7 +13,7 @@ class AuthController {
 
             const user = await AuthModel.verifyLogin(data.email, data.password);
             if (user) {
-                setToken(res, data.remember, generateToken(user));
+                setToken(res, data.remember, generateToken(user, true));
             } else {
                 res.status(401).json({
                     message: "Invalid email/phone or password",
@@ -23,5 +23,3 @@ class AuthController {
         })
     }
 }
-
-export default new AuthController();

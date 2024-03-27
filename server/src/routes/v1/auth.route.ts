@@ -1,11 +1,12 @@
+import AuthController from "@/controllers/auth.controller";
 import { Router } from "express";
 
-const router = Router();
+const AuthRouter = Router();
 
-router.post("/login", );
-router.post("/register");
-router.post("/reset");
-router.post("/resetpassword");
-router.post("/sendOTP");
+AuthRouter.post("/login", AuthController.login);
+AuthRouter.post("/register");
+AuthRouter.post("/reset");
+AuthRouter.post("/resetpassword");
+AuthRouter.post("/sendOTP");
 
-export default router;
+export default AuthRouter;

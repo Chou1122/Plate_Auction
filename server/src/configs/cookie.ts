@@ -1,7 +1,7 @@
 import { CookieOptions } from "express";
 
 export const cookieSecureOption: CookieOptions = {
-    httpOnly: true, 
+    httpOnly: true,
     secure: true
 }
 
@@ -13,6 +13,6 @@ export const cookieSecureOption: CookieOptions = {
 export function withAge(age: number | undefined): CookieOptions {
     return {
         ...cookieSecureOption,
-        maxAge: age * 1000
+        maxAge: age ? age * 1000 : undefined
     }
 }
