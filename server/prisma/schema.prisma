@@ -1,0 +1,29 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url = "mongodb://localhost:27017/auction?authSource=admin"
+}
+
+model User {
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  phone    String   @unique @db.String
+  email    String   @unique @db.String
+  fullname String   @db.String
+  password String   @db.String
+  role     UserRole @default(USER)
+}
+
+model Plate {
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  number String @db.String
+}
+
+enum UserRole {
+  ADMIN
+  PROVIDER
+  USER
+  AUCTIONEER
+}

@@ -9,12 +9,15 @@ const customTheme: CustomFlowbiteTheme['button'] = {
     },
 };
 
-interface IProps extends ButtonProps { }
+interface IProps extends ButtonProps {
+    fullWidth?: boolean
+}
 
-export default function Button({ children, ...rest }: IProps) {
+export default function Button({ children, title, fullWidth: full_width, ...rest }: IProps) {
     return (
-        <Button_ theme={customTheme} pill {...rest} >
+        <Button_ theme={customTheme} pill {...rest} className={(full_width ? "w-full" : "")} >
             {children}
+            <span className='text-center font-semibold w-full'>{title}</span>
         </Button_>
     )
 }
