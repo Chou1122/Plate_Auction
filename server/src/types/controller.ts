@@ -1,10 +1,13 @@
 import { Response as _Response, Request as _Request, NextFunction as _NextFunction } from "express"
-// import { IUser } from "./auth";
-// import { Socket } from "socket.io";
 
-// export interface ILocalData<T extends IUser = IUser> {
-//     user: T
-// }
+export interface IUser {
+    fullname: string;
+    role: string;
+}
+
+export interface ILocalData<T extends IUser = IUser> {
+    user: T
+}
 
 export interface IResponseData {
     message: string,
@@ -12,7 +15,7 @@ export interface IResponseData {
     data?: any
 }
 
-// export type Response<T = IResponseData, N = ILocalData> = _Response<T, N>
+export type Response<T = IResponseData, N = ILocalData> = _Response<T, N>
 export type Request<T = any> = _Request<any, any, any, T>;
 export type NextFunction = _NextFunction
 
@@ -27,7 +30,3 @@ export class InputError extends Error {
         this.value = value;
     }
 }
-
-// export interface MySocket extends Socket {
-//     user: IUser;
-// }
