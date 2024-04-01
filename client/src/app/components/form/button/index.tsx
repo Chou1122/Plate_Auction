@@ -13,9 +13,9 @@ interface IProps extends ButtonProps {
     fullWidth?: boolean
 }
 
-export default function Button({ children, title, fullWidth: full_width, ...rest }: IProps) {
+export default function Button({ children, title, fullWidth, className, ...rest }: IProps) {
     return (
-        <Button_ theme={customTheme} pill {...rest} className={(full_width ? "w-full" : "")} >
+        <Button_ theme={customTheme} pill {...rest} className={className + " " + (fullWidth ? "w-full" : "")} >
             {children}
             <span className='text-center font-semibold w-full'>{title}</span>
         </Button_>

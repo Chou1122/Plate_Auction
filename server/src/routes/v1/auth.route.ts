@@ -9,6 +9,6 @@ AuthRouter.post("/logout", [checkJWT], AuthController.logout);
 AuthRouter.post("/register");
 AuthRouter.post("/reset");
 AuthRouter.post("/resetpassword");
-AuthRouter.post("/sendOTP");
+AuthRouter.post("/sendOTP", AuthController.sendOTP);
 
 export default AuthRouter;

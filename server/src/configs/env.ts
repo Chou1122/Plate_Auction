@@ -11,8 +11,6 @@ interface ENV_VAL extends DotenvParseOutput {
 
     RD_PORT: string
     RD_HOST: string
-    RD_PASSWORD: string
-    RD_USERNAME: string
 
     JWT_KEY: string
     JWT_REFRESH_KEY: string

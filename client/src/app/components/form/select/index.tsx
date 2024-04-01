@@ -1,4 +1,5 @@
 import { CustomFlowbiteTheme, SelectProps, Select as Select_ } from "flowbite-react";
+import Label from "../label";
 
 const theme: CustomFlowbiteTheme['select'] = {
     field: {
@@ -12,13 +13,19 @@ const theme: CustomFlowbiteTheme['select'] = {
 
 interface IProps extends SelectProps { }
 
-export default function Select(props: IProps) {
+export default function Select({ className, name, title, ...props }: IProps) {
     return (
-        <Select_ theme={theme} {...props}>
-            <option>United States</option>
-            <option>Canada</option>
-            <option>France</option>
-            <option>Germany</option>
-        </Select_>
+        <div className={"mb-3 " + className}>
+            <div className="mb-2 block">
+                <Label name={name} title={title} />
+            </div>
+
+            <Select_ theme={theme} {...props} id={name} name={name}>
+                <option>United States</option>
+                <option>Canada</option>
+                <option>France</option>
+                <option>Germany</option>
+            </Select_>
+        </div>
     )
 }

@@ -1,4 +1,5 @@
-import { CustomFlowbiteTheme, Label, TextInput, TextInputProps } from "flowbite-react"
+import { CustomFlowbiteTheme, TextInput, TextInputProps } from "flowbite-react"
+import Label from "../label"
 
 const theme: CustomFlowbiteTheme['textInput'] = {
     field: {
@@ -13,13 +14,13 @@ const theme: CustomFlowbiteTheme['textInput'] = {
 
 interface IProps extends TextInputProps { }
 
-export default function Input({ name, title, ...props }: IProps) {
+export default function Input({ className, name, title, ...props }: IProps) {
     return (
-        <div className="mb-3">
+        <div className={"mb-3 " + className}>
             <div className="mb-2 block">
-                <Label htmlFor={name} value={title} />
+                <Label name={name} title={title} />
             </div>
-            <TextInput theme={theme} {...props} name={name}/>
+            <TextInput theme={theme} {...props} name={name} />
         </div>
     )
 }

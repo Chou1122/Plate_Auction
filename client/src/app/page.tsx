@@ -17,7 +17,7 @@ export default function Homepage() {
       <main className="relative px-10 md:px-16 py-16">
         <section className="min-h-screen">
           <Cursor />
-          <Nav changeColor/>
+          <Nav whiteMode/>
           <div className="h-24"></div>
 
           <section className="flex flex-row justify-center 2xl:justify-between">
