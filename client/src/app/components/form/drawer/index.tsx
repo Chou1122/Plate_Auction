@@ -1,7 +1,8 @@
 "use client"
 
-import { useEffect, useState } from "react";
+import { KeyboardEvent, useEffect, useState } from "react";
 import { HiOutlineX } from "react-icons/hi"
+import { HiHeart } from "react-icons/hi2"
 import Chip from "../chip";
 import Link from "next/link";
 import Button from "../button";
@@ -26,6 +27,16 @@ export default function Drawer({ name, trigger }: IProps) {
         if (trigger != 0) setOpen(true);
     }, [trigger])
 
+    useEffect(() => {
+        window.onkeyup = (ev: any): any => {
+            if (ev.key === "Escape") setOpen(false);
+        }
+        
+        return () => {
+            window.onkeyup = null;
+        }
+    }, [])
+
     return (
         <div
             id={name}
@@ -33,11 +44,19 @@ export default function Drawer({ name, trigger }: IProps) {
 
             <div className="flex justify-between items-center">
                 <h1 className="text-xl font-semibold font-montserat">Plate info</h1>
-                <button
-                    className="p-3 rounded-xl bg-gray-100 hover:bg-gray-300"
-                    onClick={handleClose}>
-                    <HiOutlineX />
-                </button>
+                <div className="flex gap-2">
+                    <button
+                        className="p-3 rounded-xl bg-red-100 hover:bg-gray-300 text-red-500"
+                        onClick={handleClose}>
+                        <HiHeart />
+                    </button>
+
+                    <button
+                        className="p-3 rounded-xl bg-gray-100 hover:bg-gray-300"
+                        onClick={handleClose}>
+                        <HiOutlineX />
+                    </button>
+                </div>
             </div>
 
             <div className="mt-10 flex flex-col gap-5">

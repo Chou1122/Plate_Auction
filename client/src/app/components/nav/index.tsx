@@ -12,8 +12,8 @@ export default function Nav({ whiteMode }: { whiteMode?: boolean }) {
 
             <div className="flex flex-row gap-5 lg:gap-10 font-montserat font-bold text-blue-950 text-lg items-center">
                 <div className="hidden lg:flex gap-10">
-                    <HoverLink href="" name="Upcoming" changeColor={whiteMode} />
-                    <HoverLink href="" name="Ongoing" changeColor={whiteMode} />
+                    <HoverLink href="" name="Official list" changeColor={whiteMode} />
+                    <HoverLink href="" name="Announcement list" changeColor={whiteMode} />
                     <HoverLink href="" name="Result" changeColor={whiteMode} />
                 </div>
 
