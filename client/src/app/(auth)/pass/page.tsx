@@ -11,7 +11,7 @@ export default function Pass() {
             <Input placeholder="password" title="Re-type password" name="re_password" type="password" />
 
             <div className="mt-10 mb-5">
-                <Button color={"primary"} title="Change password" fullWidth />
+                <Button color={"primary"} title="Change password" fullSized />
             </div>
         </>
     )

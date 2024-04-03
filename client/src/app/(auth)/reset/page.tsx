@@ -10,7 +10,7 @@ export default function reset() {
 
             <Input placeholder="demo@gmail.com" title="Email" name="email" />
             <div className="my-5">
-                <Button color={"primary"} title="Send reset password link" fullWidth />
+                <Button color={"primary"} title="Send reset password link" fullSized />
             </div>
 
             <div className="flex gap-2 justify-center font-montserat text-sm">

@@ -3,6 +3,7 @@ import Checkbox from "@/app/components/form/checkbox";
 import Link from "@/app/components/form/link";
 import Input from "@components/form/input";
 import FormTitle from "../components/title_form";
+import { HiKey, HiMail, HiOutlineKey, HiPhone, HiQrcode, HiShieldCheck, HiUserCircle } from "react-icons/hi";
 
 export default function Signup() {
     return (
@@ -10,12 +11,13 @@ export default function Signup() {
             <FormTitle title="Fill up your information" subtitle="Provide some info for us to participate auction." />
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                <Input placeholder="Đỗ Tuấn Nghĩa" title="Fullname" name="fullname" />
-                <Input placeholder="Phone number" title="Phone number" name="phone" type="number" />
-                <Input placeholder="Password" title="Password" name="password" type="password" />
-                <Input placeholder="Password" title="Retype Password" name="re_password" type="password" />
-                <Input placeholder="demo@gmail.com" title="Email" name="email" />
-                <Input placeholder="OTP" title="OTP" name="otp" />
+                <Input placeholder="Đỗ Tuấn Nghĩa" title="Fullname" name="fullname" icon={HiUserCircle} />
+                <Input placeholder="Phone number" title="Phone number" name="phone" type="number" icon={HiPhone} />
+                <Input placeholder="01200134235" title="Identity number" name="identity" icon={HiShieldCheck} />
+                <Input placeholder="Password" title="Password" name="password" type="password" icon={HiKey} />
+                <Input placeholder="Password" title="Retype Password" name="re_password" type="password" icon={HiOutlineKey} />
+                <Input placeholder="demo@gmail.com" title="Email" name="email" icon={HiMail}/>
+                <Input placeholder="OTP" title="OTP" name="otp" icon={HiQrcode}/>
             </div>
 
             <div>
@@ -36,7 +38,7 @@ export default function Signup() {
             </div>
 
             <div className="my-5">
-                <Button color={"primary"} title="Đăng ký" fullWidth />
+                <Button color={"primary"} title="Đăng ký" fullSized />
             </div>
 
             <div className="flex gap-2 justify-center font-montserat text-sm">

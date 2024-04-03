@@ -16,7 +16,7 @@ export default function LoginPage() {
                 <Link href={"/reset"} title="Forget password" />
             </div>
             <div className="my-5">
-                <Button color={"primary"} title="Login" fullWidth />
+                <Button color={"primary"} title="Login" fullSized />
             </div>
             
             <div className="flex gap-2 justify-center font-montserat text-sm">
