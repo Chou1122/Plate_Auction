@@ -1,8 +1,8 @@
+import { UserRole } from "@prisma/client";
 import { Response as _Response, Request as _Request, NextFunction as _NextFunction } from "express"
-
 export interface IUser {
     fullname: string;
-    role: string;
+    role: UserRole
     id: string;
 }
 

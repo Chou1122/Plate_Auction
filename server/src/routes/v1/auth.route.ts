@@ -6,7 +6,7 @@ const AuthRouter = Router();
 
 AuthRouter.post("/login", AuthController.login);
 AuthRouter.post("/logout", [checkJWT], AuthController.logout);
-AuthRouter.post("/register");
+AuthRouter.post("/signup", AuthController.signup);
 AuthRouter.post("/reset");
 AuthRouter.post("/resetpassword");
 AuthRouter.post("/sendOTP", AuthController.sendOTP);

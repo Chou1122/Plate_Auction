@@ -1,4 +1,6 @@
+import { InputError } from "@/types/controller";
 import Validator from "./base.validator";
+import { UserRole } from "@prisma/client";
 
 export interface LoginBody {
     email: string;
@@ -11,13 +13,16 @@ export interface LogoutBody {
     device: string;
 }
 
-export interface RegisterBody{
+export interface RegisterBody {
+    device: string;
+    cid: string,
     email: string;
     password: string;
-    re_password: boolean;
+    re_password: string;
     phone: string;
     otp: string;
     fullname: string;
+    role: UserRole
 }
 
 export interface OTPBody {
@@ -37,5 +42,17 @@ export default class AuthValidator extends Validator {
 
     static validateOTP(data: OTPBody) {
         this.checkEmail(data.email);
+    }
+
+    static validateRegister(data: RegisterBody) {
+        this.checkEmail(data.email);
+        this.checkPassword(data.password);
+        this.checkOTP(data.otp);
+        this.checkCID(data.cid);
+        this.checkPhone(data.phone);
+        this.checkRole(data.role);
+
+        if (data.password !== data.re_password)
+            throw new InputError("Re-type password must be same as password", "re_password", data.re_password);
     }
 }

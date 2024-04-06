@@ -3,7 +3,7 @@ export enum NameType {
     USER_OTP
 }
 
-export function getKey(name: string, type: NameType): string {
+export function genKey(name: string, type: NameType): string {
     switch (type) {
         case NameType.USER_DEVICES:
             return name + '_devices'

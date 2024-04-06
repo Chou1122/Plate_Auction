@@ -33,7 +33,7 @@ if (require.main === module) {
     await redis.startup();
     console.log("📕 [redis]: Connected to redis");
     // await database.connect();
-    console.log("📒 [mongo]: Connected to mysql");
+    console.log("📒 [mongo]: Connected to mongodb");
     // await mailer.startup();
     // console.log("💌 [database]: Connected to mailer");
 

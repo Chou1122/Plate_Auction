@@ -4,11 +4,12 @@ generator client {
 
 datasource db {
   provider = "mongodb"
-  url = "mongodb://localhost:27017/auction?authSource=admin"
+  url      = "mongodb://localhost:27017/auction?authSource=admin"
 }
 
-model User {
+model Users {
   id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  cid      String   @unique @db.String
   phone    String   @unique @db.String
   email    String   @unique @db.String
   fullname String   @db.String
@@ -16,7 +17,7 @@ model User {
   role     UserRole @default(USER)
 }
 
-model Plate {
+model Plates {
   id     String @id @default(auto()) @map("_id") @db.ObjectId
   number String @db.String
 }
