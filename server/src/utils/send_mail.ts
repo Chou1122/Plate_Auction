@@ -20,33 +20,20 @@ export async function sendMail(to: string, subject: string, body: any) {
     });
 }
 
-export async function sendForgetPasswordMail(user: any, token: string) {
+export async function sendResetPassword(email: string, username: string, token: string) {
     const path = env.ENV === "dev"
-        ? "/src/templates/forgot-password-email.html"
-        : "/templates/forgot-password-email"
+        ? "/src/templates/reset.html"
+        : "/templates/reset"
+
 
     const body = renderTemplate(
         path,
         {
             url: `${env.BACKEND}/auth/reset?token=${token}`,
-            name: user.username
+            name: username
         });
 
-    return await sendMail(user.email, "Khôi phục mật khẩu trên " + env.APP_NAME, body)
-}
-
-export async function sendResetPasswordMail(user: any) {
-    const path = env.ENV === "dev"
-        ? "/src/templates/reset-password-email.html"
-        : "/templates/reset-password-email"
-
-    const body = renderTemplate(
-        path,
-        {
-            name: user.username
-        });
-
-    return await sendMail(user.email, "Đã đặt lại mật khẩu trên " + env.APP_NAME, body)
+    return await sendMail(email, "Khôi phục mật khẩu trên " + env.APP_NAME, body)
 }
 
 export async function sendOTP(email: string, otp: string) {

@@ -33,6 +33,12 @@ export default abstract class Validator {
             throw new InputError("Invalid CID format", "cid", cid);
     }
 
+    protected static checkID(id: string) {
+        const ID = new RegExp(/^[0-9a-z]{24}$/);
+        if (!ID.test(id))
+            throw new InputError("Invalid ID format", "id", id);
+    }
+
     protected static checkPhone(phone: string) {
         const phoneRegex = new RegExp(/^[0-9]{10}$/);
         if (!phoneRegex.test(phone))
@@ -42,5 +48,10 @@ export default abstract class Validator {
     protected static checkRole(role: string) {
         const values = Object.values(UserRole);
         return values.includes(role as UserRole);
+    }
+
+    protected static checkDevice(device: string) {
+        if (device.trim().length === 0)
+            throw new InputError("Invalid empty string", "device", device);
     }
 }

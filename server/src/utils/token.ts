@@ -1,20 +1,17 @@
 import { withAge } from "@/configs/cookie";
 import config from "@/configs/env";
-import { RefreshJWT, TokenJWT } from "@/configs/jwt";
+import { RefreshJWT, ResetJWT, TokenJWT } from "@/configs/jwt";
 import { ILocalData, Response } from "@/types/controller";
-import { sign } from "jsonwebtoken";
+import { JwtPayload, sign, verify } from "jsonwebtoken";
 
-interface IUserPayload extends ILocalData {
-    iat?: number
-    exp?: number
-}
+interface IUserPayload extends ILocalData, JwtPayload { }
 
 export interface IToken {
     token: string
     refresh?: string
 }
 
-export function generateToken(user: IUserPayload) {
+export function generateToken(user: ILocalData) {
     const { iat, exp, ...data } = user as IUserPayload;
 
     const timeLeft = (!exp) ? exp - (new Date()).getTime() / 1000 : 0;
@@ -26,20 +23,34 @@ export function generateToken(user: IUserPayload) {
     return { token, refresh }
 }
 
+export function generateReset(user: ILocalData) {
+    const { iat, exp, ...data } = user as IUserPayload;
+    const token = sign(data, config.JWT_RESET_KEY, ResetJWT);
+    return { token }
+}
+
 export function setToken(res: Response, remember: boolean, token: IToken) {
     if (token) {
         res
             .status(200)
-            .cookie("token", token, withAge(remember ? 3600 : void 0))
+            .cookie("token", token.token, withAge(remember ? 3600 : void 0))
             .cookie("refresh", token.refresh, withAge(86400))
-            .json({ message: "success", data: token })
-            .send();
     } else {
         res
             .status(200)
-            .cookie("token", null, withAge(void 0))
-            .cookie("refresh", null, withAge(void 0))
-            .send();
+            .cookie("token", "", withAge(void 0))
+            .cookie("refresh", "", withAge(void 0))
     }
+}
 
+export function verifyToken(token: string): ILocalData {
+    return verify(token, config.JWT_KEY) as ILocalData;
+}
+
+export function verifyRefresh(token: string): ILocalData {
+    return verify(token, config.JWT_REFRESH_KEY) as ILocalData;
+}
+
+export function verifyReset(token: string): ILocalData {
+    return verify(token, config.JWT_RESET_KEY) as ILocalData;
 }

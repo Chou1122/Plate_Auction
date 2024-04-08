@@ -1,2 +1,2 @@
 npx prisma db push
-prisma generate
+npx prisma generate

@@ -9,8 +9,8 @@ datasource db {
 
 model Users {
   id       String   @id @default(auto()) @map("_id") @db.ObjectId
-  cid      String   @unique @db.String
-  phone    String   @unique @db.String
+  cid      String   @unique @db.String @default(uuid())
+  phone    String   @unique @db.String @default(uuid())
   email    String   @unique @db.String
   fullname String   @db.String
   password String   @db.String

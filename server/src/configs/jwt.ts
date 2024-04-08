@@ -10,5 +10,5 @@ export const RefreshJWT: jwt.SignOptions = {
 }
 
 export const ResetJWT: jwt.SignOptions = {
-    expiresIn: env.ENV === "dev" ? "180s" : "300s"
+    expiresIn: env.ENV === "dev" ? "3600s" : "300s"
 }

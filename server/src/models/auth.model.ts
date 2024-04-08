@@ -1,19 +1,18 @@
 import { IUser } from '@/types/controller';
-import { PrismaClient, UserRole, Users } from '@prisma/client'
-import { UserArgs } from '@prisma/client/runtime/library';
+import { PrismaClient, Users } from '@prisma/client'
 import { compare } from "bcrypt";
 import { hash } from "bcrypt"
 
 const prisma = new PrismaClient();
 
 export class AuthModel {
-    static async verifyLogin(emailOrPhone: string, password: string): Promise<IUser> {
+    static async verifyLogin(query: string, password: string): Promise<IUser> {
         const record = await prisma.users.findFirst({
             select: { password: true, fullname: true, role: true, id: true },
             where: {
                 OR: [
-                    { email: emailOrPhone },
-                    { phone: emailOrPhone }
+                    { email: query },
+                    { phone: query }
                 ]
             }
         });
@@ -29,6 +28,45 @@ export class AuthModel {
         }
     }
 
+    static async verifyReset(query: string): Promise<IUser> {
+        const record = await prisma.users.findFirst({
+            select: { id: true, fullname: true },
+            where: {
+                OR: [
+                    { email: query },
+                    { phone: query }
+                ]
+            }
+        });
+
+        if (record) {
+            return {
+                fullname: record.fullname,
+                id: record.id,
+                role: "USER",
+            }
+        } else {
+            return null;
+        }
+    }
+
+    static async forceChangePassword(id: string, password: string) {
+        await prisma.users.update({
+            where: {
+                id: id
+            },
+            data: {
+                password: await hash(password, 12)
+            }
+        });
+    }
+
+
+    /**
+     * =================
+     * User Admin
+     * =================
+     */
     static async addUser(data: Omit<Users, "id">): Promise<any> {
         const record = await prisma.users.create({
             data: {
@@ -45,5 +83,37 @@ export class AuthModel {
         });
 
         return record;
+    }
+
+    static async removeUser(id: string) {
+        await prisma.users.delete({
+            where: {
+                id: id
+            }
+        })
+    }
+
+    static async updateUser(id: string, data: Pick<Users, "email" | "role" | "fullname">) {
+        const record = await prisma.users.update({
+            where: {
+                id: id
+            },
+            data: {
+                email: data.email,
+                role: data.role,
+                fullname: data.fullname
+            }
+        })
+    }
+
+    static async generatePasswordUser(id: string, password: string) {
+        const record = await prisma.users.update({
+            where: {
+                id: id
+            },
+            data: {
+                password: await hash(password, 12)
+            }
+        });
     }
 }

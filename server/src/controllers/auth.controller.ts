@@ -1,12 +1,13 @@
+import config from "@/configs/env";
 import { AuthModel } from "@/models/auth.model";
 import OTPModel from "@/models/otp.model";
 import TokenModel from "@/models/token.model";
-import { Request, Response } from "@/types/controller";
-import generateOTP from "@/utils/generate";
+import { InputError, Request, Response } from "@/types/controller";
+import { generateOTP, generatePassword } from "@/utils/generate";
 import handleError from "@/utils/handle_error";
-import { sendOTP } from "@/utils/send_mail";
-import { generateToken, setToken } from "@/utils/token";
-import AuthValidator, { LoginBody, LogoutBody, OTPBody, RegisterBody } from "@/validators/auth.validator";
+import { sendOTP, sendResetPassword } from "@/utils/send_mail";
+import { generateReset, generateToken, setToken } from "@/utils/token";
+import AuthValidator, { CreateUserBody, DeleteUserBody, LoginBody, LogoutBody, OTPBody, RegisterBody, ResetBody, SetPassword, UpdateUserBody } from "@/validators/auth.validator";
 
 export default class AuthController {
     static login(req: Request, res: Response) {
@@ -20,11 +21,9 @@ export default class AuthController {
                 await TokenModel.addDevice(user.id, data.device);
                 const token = generateToken({ user, device: data.device, remember: data.remember });
                 setToken(res, data.remember, token);
+                res.end();
             } else {
-                res.status(401).json({
-                    message: "Invalid email/phone or password",
-                    name: "email"
-                })
+                throw new InputError("Invalid email/phone or password", "email")
             }
         })
     }
@@ -35,15 +34,11 @@ export default class AuthController {
         handleError(res, async () => {
             AuthValidator.validateLogout(data);
             const { user, device } = res.locals;
-            console.log(res.locals);
 
             await TokenModel.removeDevice(user.id, device);
             setToken(res, false, null);
+            res.sendStatus(200);
         });
-    }
-
-    static register(req: Request, res: Response) {
-        const data = <LoginBody>req.body;
     }
 
     static sendOTP(req: Request, res: Response) {
@@ -64,17 +59,140 @@ export default class AuthController {
 
         handleError(res, async () => {
             AuthValidator.validateRegister(data);
-            // if (OTPModel.verifyOtp(data.device, data.otp)) {
-                const acc = AuthModel.addUser({
+            if (await OTPModel.verifyOtp(data.device, data.otp)) {
+                await AuthModel.addUser({
                     cid: data.cid,
                     email: data.email,
                     password: data.password,
                     phone: data.phone,
                     fullname: data.fullname,
-                    role: data.role
+                    role: "USER"
                 });
-            // }
-            // else throw new Error("Invalid OTP")
+
+                res.sendStatus(200);
+            }
+            else throw new InputError("Invalid OTP", "otp", data.otp);
+        });
+    }
+
+    static revoke(req: Request, res: Response) {
+        const { device, user } = res.locals;
+
+        handleError(res, async () => {
+            await TokenModel.revokeDevice(user.id, device);
+            res.sendStatus(200);
+        })
+    }
+
+    static reset(req: Request, res: Response) {
+        const data = <ResetBody>req.body;
+
+        handleError(res, async () => {
+            AuthValidator.validateReset(data);
+
+            const user = await AuthModel.verifyReset(data.email);
+
+            if (user) {
+                const token = generateReset({ user, device: "", remember: false });
+                sendResetPassword(data.email, user.fullname, token.token);
+                res.end();
+            } else {
+                throw new InputError("No user linked with the email", "email")
+            }
+        })
+    }
+
+    static saveToken(req: Request, res: Response) {
+        const query = req.query;
+        if (query && query.token) {
+            setToken(res, false, { token: query.token });
+        }
+        res.redirect(config.FRONTEND + "/reset_password");
+    }
+
+    static resetPassword(req: Request, res: Response) {
+        const data = <SetPassword>req.body;
+        const user = res.locals.user;
+
+        handleError(res, async () => {
+            AuthValidator.validateSetPassword(data);
+            AuthModel.forceChangePassword(user.id, data.password);
+            res.end();
+        })
+    }
+
+    /**
+    * =================
+    * User Admin
+    * =================
+    */
+
+    static createUser(req: Request, res: Response) {
+        const data = <CreateUserBody>req.body;
+
+        handleError(res, async () => {
+            AuthValidator.validateCreate(data);
+
+            const password = generatePassword();
+
+            await AuthModel.addUser({
+                cid: undefined,
+                phone: undefined,
+                email: data.email,
+                password: password,
+                fullname: data.fullname,
+                role: data.role
+            });
+
+            res.json({
+                message: "Create successfully",
+                data: {
+                    email: data.email,
+                    fullname: data.fullname,
+                    role: data.role,
+                    password: password
+                }
+            })
+        });
+    }
+
+    static deleteUser(req: Request, res: Response) {
+        const data = <DeleteUserBody>req.params;
+
+        handleError(res, async () => {
+            AuthValidator.validateDelete(data);
+            await AuthModel.removeUser(data.id);
+            res.sendStatus(200);
+        });
+    }
+
+    static updateUser(req: Request, res: Response) {
+        const id = <string>req.params.id;
+        const data = <UpdateUserBody>req.body;
+
+        handleError(res, async () => {
+            AuthValidator.validateUpdate(data);
+            await AuthModel.updateUser(id, data);
+            res.sendStatus(200);
+        });
+    }
+
+    static generatePasswordUser(req: Request, res: Response) {
+        const id = <string>req.params.id;
+
+        handleError(res, async () => {
+            AuthValidator.validateGeneratePasswordUser({ id });
+            const password = generatePassword();
+
+            await AuthModel.generatePasswordUser(id, password);
+
+            res.json({
+                message: "Create successfully",
+                data: {
+                    id: id,
+                    password: password
+                }
+            })
         });
     }
 }
