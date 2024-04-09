@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import helmet from "helmet";
 import morgan from "morgan";
 import cookieParser from 'cookie-parser';
+import * as cors from "cors";
 
 import config from "./configs/env";
 import route from "./routes";
@@ -24,6 +25,15 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
+// Cors
+app.use(cors.default({
+  origin: config.FRONTEND,
+  credentials: true,
+  methods: ["GET", "PUT", "POST", "DELETE"],
+  optionsSuccessStatus: 200,
+  allowedHeaders: ["Content-Type, Authorization"],
+}));
+
 // Initialize routes
 route(app);
 
@@ -32,10 +42,8 @@ if (require.main === module) {
   server.listen(port, async () => {
     await redis.startup();
     console.log("📕 [redis]: Connected to redis");
-    // await database.connect();
     console.log("📒 [mongo]: Connected to mongodb");
-    // await mailer.startup();
-    // console.log("💌 [database]: Connected to mailer");
+    console.log("💌 [database]: Connected to mailer");
 
     console.log(`✅ [server]: Server is running at http://localhost:${port}`);
   });

@@ -12,15 +12,26 @@ const theme: CustomFlowbiteTheme['textInput'] = {
     }
 }
 
-interface IProps extends TextInputProps { }
+interface IProps extends TextInputProps {
+    error?: {
+        message: string,
+        name: string
+    }
+}
 
-export default function Input({ className, name, title, ...props }: IProps) {
+export default function Input({ className, name, title, error, ...props }: IProps) {
     return (
         <div className={"mb-3 " + className}>
             <div className="mb-2 block">
                 <Label name={name} title={title} />
             </div>
-            <TextInput theme={theme} {...props} name={name} />
+            <TextInput
+                color={error && error.name === name ? "failure" : "gray"}
+                theme={theme}
+                helperText={error && error.name === name && error.message}
+                name={name}
+                {...props}
+            />
         </div>
     )
 }

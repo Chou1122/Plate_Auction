@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Lato, Montserrat_Alternates } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "@material-tailwind/react";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const lato = Lato({
   subsets: ["latin"],
@@ -29,6 +30,7 @@ export default function RootLayout({ children }: IProps) {
     <html lang="en">
       <body className={`${montserat.variable} ${lato.variable}`}>
         {children}
+        <ToastContainer stacked theme="colored" position="top-center"/>
       </body>
     </html>
   );

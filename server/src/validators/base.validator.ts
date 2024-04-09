@@ -51,7 +51,15 @@ export default abstract class Validator {
     }
 
     protected static checkDevice(device: string) {
-        if (device.trim().length === 0)
-            throw new InputError("Invalid empty string", "device", device);
+        this.checkNull(device, 'device');
+
+        const deviceID = new RegExp(/^[0-9a-z]{32}$/);
+        if (!deviceID.test(device))
+            throw new InputError('Invalid device format', 'device', device);
+    }
+
+    protected static checkNull(text: string, name: string) {
+        if (!text)
+            throw new InputError("Invalid empty string", name, text);
     }
 }
