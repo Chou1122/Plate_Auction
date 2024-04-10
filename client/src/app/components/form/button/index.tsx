@@ -5,7 +5,8 @@ const customTheme: CustomFlowbiteTheme['button'] = {
     base: "px-2 py-1 font-montserat",
     color: {
         primary: 'bg-cgreen-600 text-white hover:bg-cgreen-500 shadow-green-300/35 hover:shadow-xl hover:-translate-y-1 transition-all',
-        cyan: "bg-green-500 text-white hover:bg-green-400"
+        cyan: "bg-green-500 text-white hover:bg-green-400",
+        gray: "bg-white text-green-500 hover:bg-gray-100"
     },
 };
 
