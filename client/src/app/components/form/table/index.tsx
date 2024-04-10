@@ -17,7 +17,7 @@ export default function Table({ onClick }: IProps) {
 
     return (
         <div className="bg-white rounded-xl overflow-hidden shadow-2xl mb-16 overflow-x-scroll">
-            <Table_ className="font-montserat min-w-[900px]" striped hoverable theme={theme}>
+            <Table_ className="font-montserat min-w-[1000px]" striped hoverable theme={theme}>
                 <Table_.Head>
                     <Table_.HeadCell className="h-24 text-center">STT</Table_.HeadCell>
                     <Table_.HeadCell className="h-24 text-center">Biển số</Table_.HeadCell>

@@ -6,11 +6,12 @@ import Button from "@components/form/button";
 import Link from "@components/form/link";
 import FormTitle from "../components/title_form";
 
-import { FormEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { formToObject } from "@/utils";
 import axios, { IResponse } from "@/configs/axios";
 import FingerprintJS from '@fingerprintjs/fingerprintjs'
+import useError from "../hooks/error";
+import AuthForm from "../components/form";
 import { toast } from "react-toastify";
 
 interface ILoginData {
@@ -19,46 +20,23 @@ interface ILoginData {
     remember: "on" | "";
 }
 
-interface IError {
-    message: string;
-    name: string;
-}
-
 export default function LoginPage() {
-    const [error, setError] = useState<IError>();
     const [deviceID, setDeviceID] = useState<string>();
     const router = useRouter()
+    const { error } = useError();
 
-    async function handleSubmit(e: FormEvent<HTMLFormElement>) {
-        e.preventDefault();
-        const data = formToObject<ILoginData>(e.target as HTMLFormElement);
+    function sender(data: ILoginData) {
+        return axios.post<IResponse>("/auth/login", {
+            email: data.email,
+            password: data.password,
+            remember: data.remember === "on" ? true : false,
+            device: deviceID
+        });
+    }
 
-        try {
-            const response = await axios.post<IResponse>("/auth/login", {
-                email: data.email,
-                password: data.password,
-                remember: data.remember === "on" ? true : false,
-                device: deviceID
-            });
-
-            if (response.status === 200) {
-                toast.success("Login successfully")
-                router.push("/");
-            }
-            else if (response.status === 400) {
-                toast.error(response.data.message);
-                setError({
-                    message: response.data.message,
-                    name: response.data.name
-                })
-            }
-            else {
-                setError({ message: "", name: "" });
-            }
-        } catch (err) {
-            toast.error("Something went wrong");
-            console.log(err);
-        }
+    function handleSuccess() {
+        toast.success("Login successfully")
+        router.push("/");
     }
 
     useEffect(() => {
@@ -68,7 +46,7 @@ export default function LoginPage() {
     }, [])
 
     return (
-        <form onSubmit={handleSubmit}>
+        <AuthForm sender={sender} onSuccess={handleSuccess}>
             <FormTitle title="Login" subtitle="Let's start your challenge" />
 
             <Input placeholder="demo@gmail.com" title="Email" name="email" error={error} />
@@ -85,6 +63,6 @@ export default function LoginPage() {
                 <p>You haven't account yet</p>
                 <Link href="/signup" title="Register now"></Link>
             </div>
-        </form>
+        </AuthForm>
     )
 }

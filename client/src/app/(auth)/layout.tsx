@@ -7,9 +7,7 @@ export default function AuthLogin({ children }: { children: ReactNode }) {
         <div className="bg-gray-50 cursor-default">
             <Header />
             <main className="flex justify-center my-10 min-h-screen mt-40">
-                <div className="w-full mx-0 xs:mx-5 sm:mx-0 sm:w-[500px] md:w-[600px] border border-gray-200 p-10 rounded-3xl xs:rounded-xl h-fit bg-white shadow-xl">
-                    {children}
-                </div>
+                {children}
             </main>
             <Footer />
         </div>
