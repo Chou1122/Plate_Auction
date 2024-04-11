@@ -16,10 +16,11 @@ interface IProps extends TextInputProps {
     error?: {
         message: string,
         name: string
-    }
+    },
+    description?: string
 }
 
-export default function Input({ className, name, title, error, ...props }: IProps) {
+export default function Input({ className, name, title, error, description, ...props }: IProps) {
     return (
         <div className={"mb-3 " + className}>
             <div className="mb-2 block">
@@ -32,6 +33,7 @@ export default function Input({ className, name, title, error, ...props }: IProp
                 name={name}
                 {...props}
             />
+            <span className="font-montserat text-sm text-gray-400">{description}</span>
         </div>
     )
 }

@@ -28,6 +28,16 @@ export default class AuthController {
         })
     }
 
+    static isLogin(req: Request, res: Response) {
+        const user = res.locals.user;
+        res.json({
+            message: "Ok",
+            data: {
+                user
+            }
+        })
+    }
+
     static logout(req: Request, res: Response) {
         const data = <LogoutBody>req.body;
 

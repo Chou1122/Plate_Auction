@@ -1,3 +1,5 @@
+"use server"
+
 import {
     TbKey, TbKeyframes, TbLeaf, TbLivePhoto,
     TbLockCancel,
@@ -5,7 +7,7 @@ import {
 } from "react-icons/tb";
 import Item from "./components/item";
 
-export default function Sidebar() {
+export default async function Sidebar() {
     return (
         <div className="flex w-72 flex-col p-5 bg-white rounded-lg h-fit shadow-lg text-sm gap-1">
             <Item href="/admin/me" icon={TbUserSquareRounded} title="My profile" />

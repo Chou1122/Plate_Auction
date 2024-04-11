@@ -11,9 +11,11 @@ const theme: CustomFlowbiteTheme['select'] = {
     }
 }
 
-interface IProps extends SelectProps { }
+interface IProps extends SelectProps {
+    description: string
+}
 
-export default function Select({ className, name, title, ...props }: IProps) {
+export default function Select({ className, name, title, description, ...props }: IProps) {
     return (
         <div className={"mb-3 " + className}>
             <div className="mb-2 block">
@@ -26,6 +28,8 @@ export default function Select({ className, name, title, ...props }: IProps) {
                 <option>France</option>
                 <option>Germany</option>
             </Select_>
+
+            <span className="font-montserat text-sm text-gray-400">{description}</span>
         </div>
     )
 }

@@ -6,11 +6,14 @@ import { Router } from "express";
 
 const AuthRouter = Router();
 
+AuthRouter.get("/", [checkJWT], AuthController.isLogin);  // Done
+
 AuthRouter.post("/sendOTP", AuthController.sendOTP);            // Done
 AuthRouter.post("/login", AuthController.login);                // Done
 AuthRouter.post("/signup", AuthController.signup);              // Done
 AuthRouter.post("/logout", [checkJWT], AuthController.logout);  // Done
 AuthRouter.post("/revoke", [checkJWT], AuthController.revoke);  // Done
+
 
 AuthRouter.post("/reset", AuthController.reset);                    // Done
 AuthRouter.get("/reset", AuthController.saveToken);                 // Done        

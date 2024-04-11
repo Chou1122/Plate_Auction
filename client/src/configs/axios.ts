@@ -1,9 +1,9 @@
 import { default as _axios } from "axios";
 
-export interface IResponse {
+export interface IResponse<T = any> {
     message: string;
     name: string;
-    data: any;
+    data: T;
 }
 
 const axios = _axios.create({
