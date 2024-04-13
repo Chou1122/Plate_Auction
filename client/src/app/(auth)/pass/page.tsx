@@ -5,9 +5,9 @@ import Input from "@/app/components/form/input";
 import FormTitle from "../components/title_form";
 import axios from "@/configs/axios";
 import { toast } from "react-toastify";
-import useError from "../hooks/error";
+import useInputError from "../hooks/error";
 import AuthForm from "../components/form";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 interface IResetData {
     password: string;
@@ -15,11 +15,16 @@ interface IResetData {
 }
 
 export default function Pass() {
-    const { error } = useError();
+    const { error } = useInputError();
     const router = useRouter();
+    const queries = useSearchParams();
+    const email = queries.get("email") || "";
+
+    console.log(email);
+
 
     function sender(data: IResetData) {
-        return axios.put("/reset", {
+        return axios.put("/auth/reset", {
             password: data.password,
             re_password: data.re_password
         });
@@ -34,6 +39,7 @@ export default function Pass() {
         <AuthForm sender={sender} onSuccess={handleSuccess}>
             <FormTitle title="Change your password" subtitle="Create new password." />
 
+            <input hidden type="email" defaultValue={email} name="email" />
             <Input placeholder="password" title="Password" name="password" type="password" error={error} />
             <Input placeholder="password" title="Re-type password" name="re_password" type="password" error={error} />
 

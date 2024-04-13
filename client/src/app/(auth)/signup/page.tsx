@@ -7,7 +7,7 @@ import Input from "@components/form/input";
 import FormTitle from "../components/title_form";
 import { HiKey, HiMail, HiOutlineKey, HiPhone, HiQrcode, HiShieldCheck, HiUserCircle } from "react-icons/hi";
 import axios from "@/configs/axios";
-import useError from "../hooks/error";
+import useInputError from "../hooks/error";
 import AuthForm from "../components/form";
 import { toast } from "react-toastify";
 
@@ -22,7 +22,7 @@ interface ISignup {
 }
 
 export default function Signup() {
-    const { error } = useError();
+    const { error } = useInputError();
     function sender(data: ISignup) {
         return axios.post("/signup", {
             fullname: data.fullname,

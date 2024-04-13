@@ -7,14 +7,14 @@ import FormTitle from "../components/title_form";
 import axios, { IResponse } from "@/configs/axios";
 import { toast } from "react-toastify";
 import AuthForm from "../components/form";
-import useError from "../hooks/error";
+import useInputError from "../hooks/error";
 
 interface IResetData {
     email: string;
 }
 
 export default function ResetPage() {
-    const { error } = useError();
+    const { error } = useInputError();
 
     function sender(data: IResetData) {
         return axios.post<IResponse>("/auth/reset", {
@@ -37,7 +37,7 @@ export default function ResetPage() {
 
             <div className="flex gap-2 justify-center font-montserat text-sm">
                 <p>I just have remembered my password.</p>
-                <Link href="/login" title="Login now"></Link>
+                <Link href="/login" title="Login now" color="green"></Link>
             </div>
         </AuthForm>
     )

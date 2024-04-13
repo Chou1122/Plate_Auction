@@ -4,6 +4,7 @@ export interface IUser {
     fullname: string;
     role: UserRole
     id: string;
+    avatar?: string;
 }
 
 export interface ILocalData<T extends IUser = IUser> {

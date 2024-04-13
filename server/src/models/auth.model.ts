@@ -8,7 +8,7 @@ const prisma = new PrismaClient();
 export class AuthModel {
     static async verifyLogin(query: string, password: string): Promise<IUser> {
         const record = await prisma.users.findFirst({
-            select: { password: true, fullname: true, role: true, id: true },
+            select: { password: true, fullname: true, role: true, id: true, avatar: true },
             where: {
                 OR: [
                     { email: query },
@@ -21,7 +21,8 @@ export class AuthModel {
             return {
                 fullname: record.fullname,
                 role: record.role,
-                id: record.id
+                id: record.id,
+                avatar: record.avatar
             }
         } else {
             return null;
@@ -44,6 +45,7 @@ export class AuthModel {
                 fullname: record.fullname,
                 id: record.id,
                 role: "USER",
+                avatar: "",
             }
         } else {
             return null;

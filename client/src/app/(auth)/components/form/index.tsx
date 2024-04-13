@@ -1,7 +1,7 @@
 import { FormEvent, ReactNode } from "react";
 import { toast } from "react-toastify";
 import { formToObject } from "@/utils";
-import useError from "../../hooks/error";
+import useInputError from "../../hooks/error";
 
 interface IProps {
     children: ReactNode,
@@ -10,7 +10,7 @@ interface IProps {
 }
 
 export default function AuthForm({ children, onSuccess, sender }: IProps) {
-    const { setError } = useError();
+    const { setError } = useInputError();
 
     async function handleSubmit(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();

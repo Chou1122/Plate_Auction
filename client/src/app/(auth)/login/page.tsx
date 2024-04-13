@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import axios, { IResponse } from "@/configs/axios";
 import FingerprintJS from '@fingerprintjs/fingerprintjs'
-import useError from "../hooks/error";
+import useInputError from "../hooks/error";
 import AuthForm from "../components/form";
 import { toast } from "react-toastify";
 
@@ -23,7 +23,11 @@ interface ILoginData {
 export default function LoginPage() {
     const [deviceID, setDeviceID] = useState<string>();
     const router = useRouter()
-    const { error } = useError();
+    const { error } = useInputError();
+
+    useEffect(()=>{
+        console.log("hello");
+    }, [error])
 
     function sender(data: ILoginData) {
         return axios.post<IResponse>("/auth/login", {
@@ -46,23 +50,25 @@ export default function LoginPage() {
     }, [])
 
     return (
-        <AuthForm sender={sender} onSuccess={handleSuccess}>
-            <FormTitle title="Login" subtitle="Let's start your challenge" />
+        // <AuthForm sender={sender} onSuccess={handleSuccess}>
+        //     <FormTitle title="Login" subtitle="Let's start your challenge" />
 
-            <Input placeholder="demo@gmail.com" title="Email" name="email" error={error} />
-            <Input placeholder="password" title="Password" name="password" type="password" error={error} />
-            <div className="flex justify-between w-full">
-                <Checkbox name="remember" title="Remember me" />
-                <Link href={"/reset"} title="Forget password" />
-            </div>
-            <div className="my-5">
-                <Button color={"primary"} title="Login" fullSized type="submit" />
-            </div>
+        //     <Input placeholder="demo@gmail.com" title="Email" name="email" error={error} />
+        //     <Input placeholder="password" title="Password" name="password" type="password" error={error} />
+        //     <div className="flex justify-between w-full">
+        //         <Checkbox name="remember" title="Remember me" />
+        //         <Link href={"/reset"} title="Forget password" color="green"/>
+        //     </div>
+        //     <div className="my-5">
+        //         <Button color={"primary"} title="Login" fullSized type="submit" />
+        //     </div>
 
-            <div className="flex gap-2 justify-center font-montserat text-sm">
-                <p>You haven't account yet</p>
-                <Link href="/signup" title="Register now"></Link>
-            </div>
-        </AuthForm>
+        //     <div className="flex gap-2 justify-center font-montserat text-sm">
+        //         <p>You haven't account yet</p>
+        //         <Link href="/signup" title="Register now" color="green"></Link>
+        //     </div>
+        // </AuthForm>
+        <>
+        </>
     )
 }

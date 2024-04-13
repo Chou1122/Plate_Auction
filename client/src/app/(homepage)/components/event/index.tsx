@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { IoFlame } from "react-icons/io5";
-import Card from "../card";
+import Card from "../../../components/card";
 
-export default function EventPanel() {
+export default function EventPanel({ className }: { className?: string }) {
     return (
-        <div className="rounded-xl shadow-2xl p-10 bg-white border border-gray-200">
+        <div className={"rounded-xl shadow-2xl p-10 bg-white border border-gray-200 h-fit " + className}>
             <div className="flex flex-row gap-10 justify-between">
                 <div>
                     <h1 className="text-blue-950 flex text-3xl font-bold items-center">

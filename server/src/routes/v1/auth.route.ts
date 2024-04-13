@@ -17,7 +17,7 @@ AuthRouter.post("/revoke", [checkJWT], AuthController.revoke);  // Done
 
 AuthRouter.post("/reset", AuthController.reset);                    // Done
 AuthRouter.get("/reset", AuthController.saveToken);                 // Done        
-AuthRouter.put("reset", [checkSWT], AuthController.resetPassword);  // Done
+AuthRouter.put("/reset", [checkSWT], AuthController.resetPassword);  // Done
 
 AuthRouter.delete("/user/:id", [checkJWT, checkRole(["ADMIN"])], AuthController.deleteUser);    // Done
 AuthRouter.post("/user", [checkJWT, checkRole(["ADMIN"])], AuthController.createUser);          // Done

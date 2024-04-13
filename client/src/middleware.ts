@@ -3,13 +3,13 @@ import { IResponse } from "./configs/axios";
 
 export const config = {
     matcher: [
-        "/admin",
-        "/admin/(.*)"
+        "/",
+        // "/admin/(.*)"
     ]
 }
 
 export default async function middleware(request: NextRequest) {
-    try {        
+    try {
         const response = await fetch("http://localhost:8000/v1/auth", {
             method: "GET",
             credentials: "include",
@@ -28,7 +28,9 @@ export default async function middleware(request: NextRequest) {
         } else throw new Error("Unauthenticated");
 
     } catch (error) {
-        console.log(error);
-        return NextResponse.redirect(new URL("/login", request.url));
+        const pathname = request.nextUrl.pathname;
+
+        if (pathname.startsWith("/admin"))
+            return NextResponse.redirect(new URL("/login", request.url));
     }
 }

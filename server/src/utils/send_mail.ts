@@ -29,7 +29,7 @@ export async function sendResetPassword(email: string, username: string, token: 
     const body = renderTemplate(
         path,
         {
-            url: `${env.BACKEND}/auth/reset?token=${token}`,
+            url: `${env.BACKEND}/auth/reset?token=${token}&email=${email}`,
             name: username
         });
 

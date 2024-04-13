@@ -76,7 +76,8 @@ export default class AuthController {
                     password: data.password,
                     phone: data.phone,
                     fullname: data.fullname,
-                    role: "USER"
+                    role: "USER",
+                    avatar: ""
                 });
 
                 res.sendStatus(200);
@@ -94,6 +95,11 @@ export default class AuthController {
         })
     }
 
+    /**
+    * =================
+    * Reset password
+    * =================
+    */
     static reset(req: Request, res: Response) {
         const data = <ResetBody>req.body;
 
@@ -114,10 +120,10 @@ export default class AuthController {
 
     static saveToken(req: Request, res: Response) {
         const query = req.query;
-        if (query && query.token) {
-            setToken(res, false, { token: query.token });
-        }
-        res.redirect(config.FRONTEND + "/reset_password");
+        const email = req.query.email;
+
+        query.token && setToken(res, false, { token: query.token });
+        res.redirect(config.FRONTEND + "/pass?email=" + email);
     }
 
     static resetPassword(req: Request, res: Response) {
@@ -151,7 +157,8 @@ export default class AuthController {
                 email: data.email,
                 password: password,
                 fullname: data.fullname,
-                role: data.role
+                role: data.role,
+                avatar: ""
             });
 
             res.json({

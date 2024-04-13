@@ -21,6 +21,7 @@ interface IProps extends TextInputProps {
 }
 
 export default function Input({ className, name, title, error, description, ...props }: IProps) {
+    
     return (
         <div className={"mb-3 " + className}>
             <div className="mb-2 block">

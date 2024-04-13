@@ -3,6 +3,7 @@ import { Lato, Montserrat_Alternates } from "next/font/google";
 import "./globals.css";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import AuthGetter from "@/hooks/auth/auth_getter";
 
 const lato = Lato({
   subsets: ["latin"],
@@ -29,8 +30,10 @@ export default function RootLayout({ children }: IProps) {
   return (
     <html lang="en">
       <body className={`${montserat.variable} ${lato.variable}`}>
-        {children}
-        <ToastContainer stacked theme="colored" position="top-center"/>
+        <AuthGetter>
+          {children}
+          <ToastContainer stacked theme="colored" position="top-center" />
+        </AuthGetter>
       </body>
     </html>
   );
