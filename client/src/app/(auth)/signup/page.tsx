@@ -6,41 +6,13 @@ import Link from "@/app/components/form/link";
 import Input from "@components/form/input";
 import FormTitle from "../components/title_form";
 import { HiKey, HiMail, HiOutlineKey, HiPhone, HiQrcode, HiShieldCheck, HiUserCircle } from "react-icons/hi";
-import axios from "@/configs/axios";
-import useInputError from "../hooks/error";
-import AuthForm from "../components/form";
-import { toast } from "react-toastify";
-
-interface ISignup {
-    fullname: string;
-    phone: string;
-    cid: string;
-    password: string;
-    re_password: string;
-    email: string;
-    otp: string;
-}
+import { useForm } from "../contexts/error";
 
 export default function Signup() {
-    const { error } = useInputError();
-    function sender(data: ISignup) {
-        return axios.post("/signup", {
-            fullname: data.fullname,
-            phone: data.phone,
-            cid: data.cid,
-            password: data.password,
-            re_password: data.re_password,
-            email: data.email,
-            otp: data.otp
-        });
-    }
-
-    function handleSuccess() {
-        toast.success("Successful registration");
-    }
+    const { error, loading } = useForm();
 
     return (
-        <AuthForm sender={sender} onSuccess={handleSuccess}>
+        <>
             <FormTitle title="Fill up your information" subtitle="Provide some info for us to participate auction." />
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
@@ -71,13 +43,13 @@ export default function Signup() {
             </div>
 
             <div className="my-5">
-                <Button color={"primary"} title="Đăng ký" fullSized />
+                <Button color={"primary"} title="Đăng ký" fullSized disabled={loading} />
             </div>
 
             <div className="flex gap-2 justify-center font-montserat text-sm">
                 <p>You have an account yet</p>
                 <Link href="/login" title="Login now"></Link>
             </div>
-        </AuthForm>
+        </>
     )
 }

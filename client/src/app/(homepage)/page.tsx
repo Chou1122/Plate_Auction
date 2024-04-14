@@ -10,7 +10,6 @@ import Cover from "./components/cover";
 import Header from "../components/header";
 
 export default function Homepage() {
-  console.count("He");
   return (
     <div className="relative bg-gray-100">
       <Image alt="" src={Bg_img} className="w-full overflow-hidden absolute top-0 left-0 blur-2xl" />
