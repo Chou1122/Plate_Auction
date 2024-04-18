@@ -15,7 +15,7 @@ export default function Homepage() {
       <Image alt="" src={Bg_img} className="w-full overflow-hidden absolute top-0 left-0 blur-2xl" />
       <Cursor />
 
-      <Header type="transparent" className="relative py-16"/>
+      <Header type="transparent" className="relative py-16" />
 
       <main className="relative px-10 md:px-16 py-16">
         <section className="flex flex-row justify-center 2xl:justify-between min-h-screen">

@@ -4,6 +4,7 @@ import { ReactNode, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import axios, { IResponse } from "@/configs/axios";
 import FingerprintJS from '@fingerprintjs/fingerprintjs'
+
 import { FormProvider } from "../contexts/error";
 import { toast } from "react-toastify";
 

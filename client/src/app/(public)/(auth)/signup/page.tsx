@@ -28,7 +28,7 @@ export default function Signup() {
             <div>
                 <Checkbox name="remember">
                     <span className="ml-2 font-semibold font-montserat text-sm">
-                        Tôi cam kết chịu trách nhiệm về các thông tin cá nhân đã kê khai, chính sách bảo mật thông tin khách hàng, cơ chế giải quyết tranh chấp, <Link title="quy chế hoạt động" href="#" /> tại Website. Đồng ý chia sẻ các thông tin đã cung cấp cho tổ chức đấu giá <Link title="tham chiếu theo nghị định 13/2023/NĐ-CP" href="#" />
+                        Tôi cam kết chịu trách nhiệm về các thông tin cá nhân đã kê khai, chính sách bảo mật thông tin khách hàng, cơ chế giải quyết tranh chấp, <Link title="quy chế hoạt động" href="#" color="green" /> tại Website. Đồng ý chia sẻ các thông tin đã cung cấp cho tổ chức đấu giá <Link title="tham chiếu theo nghị định 13/2023/NĐ-CP" href="#" color="green" />
                     </span>
                 </Checkbox>
             </div>
