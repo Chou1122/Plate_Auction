@@ -42,7 +42,7 @@ export function FormProvider({ children, onSuccess, sender }: IProps) {
         try {
             setLoading(true);
             const data = formToObject(e.target as HTMLFormElement);
-            const response = await sender(data);
+            const response = await sender({ ...data, e });
             const code = response.status;
 
             switch (code) {

@@ -10,7 +10,7 @@ interface IProps {
     selected?: boolean;
 }
 
-export default function Item({ icon: Icon, title, href }: IProps) {
+export default function SidebarItem({ icon: Icon, title, href }: IProps) {
     const pathname = usePathname()
 
     return (

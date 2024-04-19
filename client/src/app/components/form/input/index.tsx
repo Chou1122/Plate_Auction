@@ -1,5 +1,6 @@
 import { CustomFlowbiteTheme, TextInput, TextInputProps } from "flowbite-react"
 import Label from "../label"
+import { ReactNode } from "react"
 
 const theme: CustomFlowbiteTheme['textInput'] = {
     field: {
@@ -17,15 +18,17 @@ interface IProps extends TextInputProps {
         message: string,
         name: string
     },
-    description?: string
+    description?: string,
+    addBtn?: ReactNode
 }
 
-export default function Input({ className, name, title, error, description, ...props }: IProps) {
-    
+export default function Input({ className, name, title, error, description, addBtn, ...props }: IProps) {
+
     return (
         <div className={"mb-3 " + className}>
-            <div className="mb-2 block">
+            <div className="mb-2 flex justify-between">
                 <Label name={name} title={title} />
+                {addBtn}
             </div>
             <TextInput
                 color={error && error.name === name ? "failure" : "gray"}

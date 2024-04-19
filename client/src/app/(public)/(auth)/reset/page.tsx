@@ -3,7 +3,7 @@
 import Button from "@/app/components/form/button";
 import Input from "@/app/components/form/input";
 import Link from "@/app/components/form/link";
-import FormTitle from "../components/title_form";
+import FormTitle from "../components/title";
 import { useForm } from "../contexts/error";
 
 export default function ResetPage() {

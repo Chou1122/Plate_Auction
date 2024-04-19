@@ -1,11 +1,11 @@
-import Logo from "../../../logo";
+import Logo from "@components/logo";
 
 import { MdEmail } from "react-icons/md";
 import { IoCall } from "react-icons/io5";
 import { IoMdMenu } from "react-icons/io";
 
-import Link from "../../../form/link";
-import { IconLink } from "../../../form/icon_link";
+import Link from "@components/form/link";
+import { IconLink } from "@components/form/icon_link";
 import SigninButton from "../signin";
 
 export default function Nav({ lightMode }: { lightMode?: boolean }) {

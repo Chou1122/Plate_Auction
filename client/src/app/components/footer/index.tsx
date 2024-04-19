@@ -31,10 +31,16 @@ const links1 = [{
 
 const links2 = [{
     name: "Term of use",
-    href: "/term"
+    href: "/faq/usage"
 }, {
     name: "Instructions",
-    href: "/instruction"
+    href: "/faq/manual"
+}, {
+    name: "FAQ",
+    href: "/faq"
+}, {
+    name: "Flows",
+    href: "/faq/flow"
 }]
 
 export default function Footer() {

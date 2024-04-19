@@ -5,7 +5,7 @@ import Input from "@components/form/input";
 import Button from "@components/form/button";
 import Link from "@components/form/link";
 
-import FormTitle from "../components/title_form";
+import FormTitle from "../components/title";
 import { useForm } from "../contexts/error";
 
 export default function LoginPage() {
