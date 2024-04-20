@@ -1,21 +1,21 @@
+"use client"
+
 import Button from "@/app/components/form/button";
 import Input from "@/app/components/form/input";
 import { Section, SectionBody, SectionHeader } from "@/app/components/section";
 import { TbPlus, TbSearch } from "react-icons/tb";
-import User from "./components/user";
-import UserViewer from "./components/user_view";
+import Plate from "./components/plate";
+import Pagination from "@/app/components/form/pagination";
 
-export default function AccountPage() {
+export default function PlatePage() {
     return (
         <Section>
             <SectionHeader>
-                Manage accounts
+                Manage plates
             </SectionHeader>
             <SectionBody>
-                <UserViewer />
-                
                 <div className="flex items-center justify-between mb-5">
-                    <p>Total 13 members</p>
+                    <p>Total 13 plates</p>
 
                     <div className="flex items-center gap-3 rounded-lg">
                         <Input type="text" placeholder="Search" icon={TbSearch} noPadding />
@@ -24,11 +24,14 @@ export default function AccountPage() {
                 </div>
 
                 <div className="p-5 bg-gray-50 rounded-lg">
-                    <User />
-                    <User />
-                    <User />
-                    <User />
-                    <User />
+                    <Plate />
+                    <Plate />
+                    <Plate />
+                    <Plate />
+
+                    <div className="flex justify-end mt-5">
+                        <Pagination totalPages={10} currentPage={9} layout="pagination" showIcons onPageChange={() => { }} />
+                    </div>
                 </div>
             </SectionBody>
         </Section>

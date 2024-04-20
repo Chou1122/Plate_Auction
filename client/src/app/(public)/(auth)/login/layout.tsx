@@ -1,12 +1,12 @@
 "use client"
 
-import { ReactNode, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import axios, { IResponse } from "@/configs/axios";
-import FingerprintJS from '@fingerprintjs/fingerprintjs'
+import { ReactNode, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 import { FormProvider } from "../contexts/error";
-import { toast } from "react-toastify";
+import FingerprintJS from '@fingerprintjs/fingerprintjs'
+import { useRouter, useSearchParams } from "next/navigation";
 
 interface ILoginData {
     email: string;
@@ -21,6 +21,9 @@ interface IProps {
 export default function LoginLayout({ children }: IProps) {
     const [deviceID, setDeviceID] = useState<string>();
     const router = useRouter()
+    const params = useSearchParams();
+    const next = params.get("next");
+    console.log(next);
 
     function sender(data: ILoginData) {
         return axios.post<IResponse>("/auth/login", {
@@ -32,8 +35,10 @@ export default function LoginLayout({ children }: IProps) {
     }
 
     function handleSuccess() {
-        toast.success("Login successfully")
-        router.push("/");
+        toast.success("Login successfully");
+        console.log(next);
+        
+        next ? router.push(next) : router.push("/")
     }
 
     useEffect(() => {

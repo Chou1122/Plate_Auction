@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { ReactNode, useEffect, useState } from "react";
 import { FormProvider } from "../contexts/error";
 import FingerprintJS from '@fingerprintjs/fingerprintjs'
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 interface ISignup {
     fullname: string;
@@ -21,13 +21,11 @@ interface IProps {
     children: ReactNode
 }
 
-export default function Signup({ children }: IProps) {
+export default function SignupLayout({ children }: IProps) {
     const [deviceID, setDeviceID] = useState<string>();
     const router = useRouter()
 
     function signupSender(data: ISignup) {
-        console.log(data);
-
         return axios.post("/auth/signup", {
             fullname: data.fullname,
             phone: data.phone,

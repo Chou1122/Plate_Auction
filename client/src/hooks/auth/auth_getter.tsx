@@ -16,7 +16,6 @@ export default function AuthGetter({ children }: IProps) {
     const headerList = headers();
     const data = JSON.parse(headerList.get('x-user') || "{}") as IResponse<{ user: IUser }>;
 
-    // console.log(data);
     return (
         <AuthProvider init_user={data.data && data.data.user}>
             {children}

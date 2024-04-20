@@ -4,7 +4,7 @@ import { IResponse } from "./configs/axios";
 export const config = {
     matcher: [
         "/",
-        // "/admin/(.*)"
+        "/admin/(.*)"
     ]
 }
 

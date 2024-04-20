@@ -3,12 +3,16 @@
 import { useAuth } from "@/hooks/auth/auth";
 import { Avatar, Dropdown } from "flowbite-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { TbAssembly, TbLogout } from "react-icons/tb";
 
 export default function SigninButton() {
     const { user, signOut } = useAuth();
+    const router = useRouter();
+
     function handleSignOut() {
         signOut();
+        router.replace("/login");
     }
 
     return (

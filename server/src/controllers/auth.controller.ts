@@ -38,6 +38,20 @@ export default class AuthController {
         })
     }
 
+    static getMe(req: Request, res: Response) {
+        const user = res.locals.user;
+
+        handleError(res, async () => {
+            const data = await AuthModel.getUser(user.id);
+            res.json({
+                message: "Ok",
+                data: {
+                    user: data
+                }
+            })
+        })
+    }
+
     static logout(req: Request, res: Response) {
         const data = <LogoutBody>req.body;
 

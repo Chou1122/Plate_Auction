@@ -19,17 +19,20 @@ interface IProps extends TextInputProps {
         name: string
     },
     description?: string,
-    addBtn?: ReactNode
+    addBtn?: ReactNode,
+    noPadding?: boolean
 }
 
-export default function Input({ className, name, title, error, description, addBtn, ...props }: IProps) {
+export default function Input({ className, name, title, error, description, addBtn, noPadding, ...props }: IProps) {
 
     return (
-        <div className={"mb-3 " + className}>
-            <div className="mb-2 flex justify-between">
-                <Label name={name} title={title} />
-                {addBtn}
-            </div>
+        <div className={(noPadding ? " " : "mb-3 ") + className}>
+            {title || addBtn &&
+                <div className="mb-2 flex justify-between">
+                    <Label name={name} title={title} />
+                    {addBtn}
+                </div>
+            }
             <TextInput
                 color={error && error.name === name ? "failure" : "gray"}
                 theme={theme}
@@ -37,7 +40,9 @@ export default function Input({ className, name, title, error, description, addB
                 name={name}
                 {...props}
             />
-            <span className="font-montserat text-sm text-gray-400">{description}</span>
+            {description &&
+                <span className="font-montserat text-sm text-gray-400">{description}</span>
+            }
         </div>
     )
 }

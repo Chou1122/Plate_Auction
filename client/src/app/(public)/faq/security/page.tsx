@@ -1,4 +1,4 @@
-import Section, { SectionBody, SectionHeader } from "../components/section";
+import { Section, SectionBody, SectionHeader } from "@components/section";
 
 export default function SecurityPage() {
     return (

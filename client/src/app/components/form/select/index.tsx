@@ -12,15 +12,18 @@ const theme: CustomFlowbiteTheme['select'] = {
 }
 
 interface IProps extends SelectProps {
-    description: string
+    description?: string
+    noPadding?: boolean
 }
 
-export default function Select({ className, name, title, description, ...props }: IProps) {
+export default function Select({ className, name, title, description, noPadding, ...props }: IProps) {
     return (
-        <div className={"mb-3 " + className}>
-            <div className="mb-2 block">
-                <Label name={name} title={title} />
-            </div>
+        <div className={(noPadding ? " " : "mb-3 ") + className}>
+            {title &&
+                <div className="mb-2 block">
+                    <Label name={name} title={title} />
+                </div>
+            }
 
             <Select_ theme={theme} {...props} id={name} name={name}>
                 <option>United States</option>
@@ -29,7 +32,10 @@ export default function Select({ className, name, title, description, ...props }
                 <option>Germany</option>
             </Select_>
 
-            <span className="font-montserat text-sm text-gray-400">{description}</span>
+            {
+                description &&
+                <span className="font-montserat text-sm text-gray-400">{description}</span>
+            }
         </div>
     )
 }
