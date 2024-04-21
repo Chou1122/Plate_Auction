@@ -24,7 +24,7 @@ export default class AuthController {
             const user = await AuthModel.verifyLogin(data.email, data.password);
 
             if (user) {
-                await TokenModel.addDevice(user.id, data.device);
+                await TokenModel.addDevice(user.id, data.device, data.device_info);
                 const token = generateToken({ user, device: data.device, remember: data.remember });
                 setToken(res, data.remember, token);
                 res.sendStatus(200);
@@ -80,16 +80,26 @@ export default class AuthController {
         });
     }
 
-    static checkLogin(req: Request, res: Response) {
-        const user = res.locals.user;
-        res.json({
-            message: "Ok",
-            data: {
-                user
-            }
-        })
+    static async checkLogin(req: Request, res: Response) {
+        const { user, device } = res.locals;
+        const signed_in = await TokenModel.hasDevice(user.id, device);
+
+        if (signed_in) {
+            res.json({
+                message: "Ok",
+                data: {
+                    user,
+                    device
+                }
+            })
+        } else res.sendStatus(401);
     }
 
+    /**
+    * =================
+    * Handle me
+    * =================
+    */
     static getMe(req: Request, res: Response) {
         const user = res.locals.user;
 
@@ -106,11 +116,11 @@ export default class AuthController {
         })
     }
 
-    static updateMe(req: Request, res: Response){
+    static updateMe(req: Request, res: Response) {
         const user = res.locals.user;
         const data = <UpdateMeBody>req.body;
 
-        handleError(res, async ()=>{
+        handleError(res, async () => {
             AuthValidator.validateUpdateMe(data);
             UserModel.updateMe(user.id, data);
             res.sendStatus(200);

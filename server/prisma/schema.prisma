@@ -34,6 +34,15 @@ model Plates {
   number String @db.String
 }
 
+model Sessions {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  device   String @db.String
+  language String @db.String
+  timezone String @db.String
+  platform String @db.String
+  ip       String @db.String
+}
+
 enum UserRole {
   ADMIN
   PROVIDER

@@ -34,7 +34,6 @@ export default function Session({ currentSession, data }: IProps) {
         } finally {
             setLoading(false);
         }
-
     }
 
     return (

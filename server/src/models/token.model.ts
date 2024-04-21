@@ -1,10 +1,12 @@
 import { redis } from "@/configs/redis";
 import { NameType, genKey } from "@/utils/redis";
+import { DeviceInfo } from "@/validators/auth.validator";
+import { PrismaClient, Sessions } from "@prisma/client";
 
 const maxDevice = 3;
-
+const prisma = new PrismaClient();
 export default class TokenModel {
-    static async addDevice(uid: string, deviceID: string) {
+    static async addDevice(uid: string, deviceID: string, deviceInfo: DeviceInfo) {
         const raw = await redis.get(genKey(uid, NameType.USER_DEVICES));
         const devices = raw ? JSON.parse(raw) : [];
 
@@ -12,6 +14,16 @@ export default class TokenModel {
             if (!devices.includes(deviceID)) {
                 devices.push(deviceID);
                 await redis.set(genKey(uid, NameType.USER_DEVICES), JSON.stringify(devices));
+
+                await prisma.sessions.create({
+                    data: {
+                        device: deviceInfo.device,
+                        ip: deviceInfo.ip,
+                        language: deviceInfo.language,
+                        platform: deviceInfo.platform,
+                        timezone: deviceInfo.timezone
+                    }
+                })
             }
         } else {
             throw new Error("Excess device number");
@@ -26,10 +38,26 @@ export default class TokenModel {
             devices.splice(devices.indexOf(deviceID), 1);
             await redis.set(genKey(uid, NameType.USER_DEVICES), JSON.stringify(devices));
         }
+
+        await prisma.sessions.deleteMany({
+            where: { device: deviceID }
+        })
     }
 
     static async revokeDevice(uid: string, deviceID: string) {
+        const raw = await redis.get(genKey(uid, NameType.USER_DEVICES));
+        const devices = raw ? JSON.parse(raw) : [];
+        devices.splice(devices.indexOf(deviceID), 1);
+
         await redis.set(genKey(uid, NameType.USER_DEVICES), JSON.stringify([deviceID]));
+
+        await prisma.sessions.deleteMany({
+            where: {
+                device: {
+                    in: devices
+                }
+            }
+        })
     }
 
     static async countDevices(uid: string) {
@@ -42,5 +70,25 @@ export default class TokenModel {
         const devices = raw ? JSON.parse(raw) : [];
 
         return devices.includes(deviceID);
+    }
+
+    static async getAllDevices(uid: string): Promise<Omit<Sessions, "id">[]> {
+        const raw = await redis.get(genKey(uid, NameType.USER_DEVICES));
+        const devices = raw ? JSON.parse(raw) : [];
+
+        return await prisma.sessions.findMany({
+            where: {
+                device: {
+                    in: devices
+                }
+            },
+            select: {
+                device: true,
+                ip: true,
+                language: true,
+                platform: true,
+                timezone: true
+            }
+        });
     }
 }

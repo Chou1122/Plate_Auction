@@ -6,6 +6,8 @@ import { useEffect, useState } from "react";
 import { useAuth } from "@/hooks/auth/auth";
 import axios, { IResponse } from "@/configs/axios";
 import { toast } from "react-toastify";
+import Button from "@/app/components/form/button";
+import RevokeAllBtn from "./components/revoke_all";
 
 export default function SessionPage() {
     const [sessions, setSessions] = useState<ISessionData[]>();
@@ -24,16 +26,16 @@ export default function SessionPage() {
     }
 
     useEffect(() => {
-        console.log(device);
-
         getSessions().then(data => setSessions(data));
     }, [])
 
     return (
         <Section>
-            <SectionHeader>Session</SectionHeader>
+            <SectionHeader>
+                Session
+            </SectionHeader>
             <SectionBody>
-                <p className="text-sm"> This is a list of devices that have logged into your account. Revoke any sessions that you do not recognize.
+                <p className="text-sm">This is a list of devices that have logged into your account. Revoke any sessions that you do not recognize.
                 </p>
 
                 <div className="space-y-2 mt-5">
@@ -49,6 +51,11 @@ export default function SessionPage() {
                                 Khong co phien nao
                             </>
                     }
+                </div>
+
+                <div className="flex justify-between items-center mt-5 p-5 bg-red-50 border border-red-400 rounded-lg">
+                    If you met something wrong, let
+                    <RevokeAllBtn />
                 </div>
             </SectionBody>
         </Section>

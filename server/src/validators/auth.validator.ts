@@ -1,12 +1,15 @@
 import { InputError } from "@/types/controller";
 import Validator from "./base.validator";
-import { UserGender, UserSettings, Users } from "@prisma/client";
+import { Sessions, UserSettings, Users } from "@prisma/client";
+
+export type DeviceInfo = Omit<Sessions, "id">
 
 export interface LoginBody {
     email: string;
     password: string;
     remember: boolean;
     device: string;
+    device_info: DeviceInfo
 }
 
 export interface LogoutBody {
@@ -46,6 +49,8 @@ export default class AuthValidator extends Validator {
     static validateLogin(data: LoginBody) {
         this.checkEmail(data.email);
         this.checkDevice(data.device);
+
+        // Check device info
     }
 
     static validateLogout(data: LogoutBody) {
