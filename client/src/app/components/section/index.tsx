@@ -3,7 +3,7 @@ import { ReactNode } from "react"
 
 export function Section({ children, id }: { children: ReactNode, id?: string }) {
     return (
-        <section className="bg-white p-10 rounded-lg shadow-lg" id={id}>
+        <section className="bg-white p-10 rounded-lg shadow-lg w-full" id={id}>
             {children}
         </section>
     )

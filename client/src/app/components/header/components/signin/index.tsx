@@ -4,9 +4,9 @@ import { useAuth } from "@/hooks/auth/auth";
 import { Avatar, Dropdown } from "flowbite-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { TbAssembly, TbLogout } from "react-icons/tb";
+import { TbAssembly, TbLogin, TbLogout } from "react-icons/tb";
 
-export default function SigninButton() {
+export default function UserStatus() {
     const { user, signOut } = useAuth();
     const router = useRouter();
 
@@ -43,9 +43,9 @@ export default function SigninButton() {
 
             </Dropdown>
             : <Link
-                className="hidden xs:block rounded-full px-5 py-3 bg-blue-950 text-white hover:bg-cgreen-600 transition-all text-center font-semibold text-sm"
-                href={"/signup"}>
-                Sign up
+                className="hidden xs:block rounded-full p-3 bg-green-100 hover:bg-cgreen-600"
+                href={"/login"}>
+                <TbLogin size={24} />
             </Link>
 
     )

@@ -4,6 +4,8 @@ import { IResponse } from "./configs/axios";
 export const config = {
     matcher: [
         "/",
+        "/user/(.*)",
+        "/faq/(.*)",
         "/admin/(.*)"
     ]
 }
@@ -30,7 +32,7 @@ export default async function middleware(request: NextRequest) {
     } catch (error) {
         const pathname = request.nextUrl.pathname;
 
-        if (pathname.startsWith("/admin"))
-            return NextResponse.redirect(new URL("/login", request.url));
+        if (pathname.startsWith("/admin") || pathname.startsWith("/user"))
+            return NextResponse.redirect(new URL("/login?next=" + pathname, request.url));
     }
 }

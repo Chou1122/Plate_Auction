@@ -8,6 +8,7 @@ import handleError from "@/utils/handle_error";
 import { sendOTP, sendResetPassword } from "@/utils/send_mail";
 import { generateReset, generateToken, setToken } from "@/utils/token";
 import AuthValidator, { CreateUserBody, DeleteUserBody, LoginBody, LogoutBody, OTPBody, RegisterBody, ResetBody, SetPassword, UpdateUserBody } from "@/validators/auth.validator";
+import { UserGender } from "@prisma/client";
 
 export default class AuthController {
     static login(req: Request, res: Response) {
@@ -91,7 +92,9 @@ export default class AuthController {
                     phone: data.phone,
                     fullname: data.fullname,
                     role: "USER",
-                    avatar: ""
+                    avatar: "",
+                    address: "",
+                    gender: UserGender.OTHER
                 });
 
                 res.sendStatus(200);
@@ -172,7 +175,9 @@ export default class AuthController {
                 password: password,
                 fullname: data.fullname,
                 role: data.role,
-                avatar: ""
+                avatar: "",
+                address: "",
+                gender: UserGender.OTHER
             });
 
             res.json({
@@ -225,5 +230,35 @@ export default class AuthController {
                 }
             })
         });
+    }
+
+    static getUser(req: Request, res: Response) {
+        const id = <string>req.params.id;
+        handleError(res, async () => {
+            const user = await AuthModel.getUser(id);
+            if (user) {
+                res.json({
+                    message: "Ok",
+                    data: {
+                        user: {
+                            id: user.id,
+                            email: user.email,
+                            fullname: user.fullname,
+                            gender: user.gender,
+                            role: user.role,
+                            avatar: user.avatar
+                        }
+                    }
+                })
+            } else {
+                res.status(400).json({
+                    message: "No exist user",
+                    data: {
+                        user: null
+                    }
+                })
+            }
+
+        })
     }
 }

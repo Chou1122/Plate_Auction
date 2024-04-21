@@ -56,8 +56,6 @@ export default function FAQ() {
                     Để kiểm tra lịch sử đấu giá, bạn vui lòng bấm vào mục “Kết quả” trên trang đấu giá trực tuyến
                 </SectionBody>
             </Section>
-
-
         </div>
     )
 }

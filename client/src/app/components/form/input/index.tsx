@@ -5,7 +5,7 @@ import { ReactNode } from "react"
 const theme: CustomFlowbiteTheme['textInput'] = {
     field: {
         input: {
-            base: "block w-full border disabled:cursor-not-allowed disabled:opacity-50 transition-all",
+            base: "block w-full border disabled:cursor-not-allowed disabled:opacity-50 transition-all font-semibold",
             colors: {
                 gray: "bg-gray-50 border-gray-300 text-green-600 focus:border-green-600 focus:ring-green-600 hover:border-green-600"
             }
@@ -20,14 +20,15 @@ interface IProps extends TextInputProps {
     },
     description?: string,
     addBtn?: ReactNode,
-    noPadding?: boolean
+    noPadding?: boolean,
+    
 }
 
 export default function Input({ className, name, title, error, description, addBtn, noPadding, ...props }: IProps) {
 
     return (
         <div className={(noPadding ? " " : "mb-3 ") + className}>
-            {title || addBtn &&
+            {(title || addBtn) &&
                 <div className="mb-2 flex justify-between">
                     <Label name={name} title={title} />
                     {addBtn}

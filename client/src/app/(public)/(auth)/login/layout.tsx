@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import { FormProvider } from "../contexts/error";
 import FingerprintJS from '@fingerprintjs/fingerprintjs'
 import { useRouter, useSearchParams } from "next/navigation";
+import { useAuth } from "@/hooks/auth/auth";
 
 interface ILoginData {
     email: string;
@@ -23,7 +24,7 @@ export default function LoginLayout({ children }: IProps) {
     const router = useRouter()
     const params = useSearchParams();
     const next = params.get("next");
-    console.log(next);
+    const { signIn } = useAuth();
 
     function sender(data: ILoginData) {
         return axios.post<IResponse>("/auth/login", {
@@ -35,9 +36,8 @@ export default function LoginLayout({ children }: IProps) {
     }
 
     function handleSuccess() {
+        signIn();
         toast.success("Login successfully");
-        console.log(next);
-        
         next ? router.push(next) : router.push("/")
     }
 

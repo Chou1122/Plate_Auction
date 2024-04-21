@@ -54,7 +54,12 @@ export class AuthModel {
 
     static async getUser(id: string): Promise<Omit<Users, "password">> {
         const record = await prisma.users.findFirst({
-            select: { avatar: true, fullname: true, role: true, cid: true, email: true, phone: true, id: true },
+            select: {
+                avatar: true, fullname: true,
+                role: true, cid: true, email: true,
+                phone: true, id: true, gender: true,
+                address: true
+            },
             where: {
                 id: id
             }
@@ -68,7 +73,9 @@ export class AuthModel {
                 cid: record.cid,
                 email: record.email,
                 phone: record.phone,
-                id: record.id
+                id: record.id,
+                address: record.address,
+                gender: record.gender
             })
         } else {
             return null;
@@ -100,7 +107,8 @@ export class AuthModel {
                 fullname: data.fullname,
                 password: await hash(data.password, 12),
                 phone: data.phone,
-                role: data.role
+                role: data.role,
+                address: ""
             },
             select: {
                 id: true

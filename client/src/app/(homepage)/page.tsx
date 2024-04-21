@@ -2,12 +2,12 @@
 
 import Image from "next/image";
 import Bg_img from "@/assets/bg_top.svg"
+import Footer from "@components/footer";
+import List from "@components/list";
+import Header from "@components/header";
 import EventPanel from "./components/event";
-import Footer from "../components/footer";
-import Cursor from "../components/cursor";
-import List from "../components/list";
+import Cursor from "./components/cursor";
 import Cover from "./components/cover";
-import Header from "../components/header";
 
 export default function Homepage() {
   return (
