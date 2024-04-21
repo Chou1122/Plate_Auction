@@ -1,4 +1,5 @@
 import AuthModel from "@/models/auth.model";
+import UserModel from "@/models/user.model";
 import { Request, Response } from "@/types/controller";
 import { generatePassword } from "@/utils/generate";
 import handleError from "@/utils/handle_error";
@@ -13,7 +14,7 @@ export default class UserController {
             UserValidator.validateCreate(data);
             const password = generatePassword();
 
-            await AuthModel.addUser({
+            await UserModel.addUser({
                 cid: undefined,
                 phone: undefined,
                 email: data.email,
@@ -42,7 +43,7 @@ export default class UserController {
 
         handleError(res, async () => {
             UserValidator.validateDelete(data);
-            await AuthModel.removeUser(data.id);
+            await UserModel.removeUser(data.id);
             res.sendStatus(200);
         });
     }
@@ -53,57 +54,66 @@ export default class UserController {
 
         handleError(res, async () => {
             UserValidator.validateUpdate(data);
-            await AuthModel.updateUser(id, data);
+            await UserModel.updateUser(id, data);
             res.sendStatus(200);
         });
     }
 
-    static generatePasswordUser(req: Request, res: Response) {
-        const id = <string>req.params.id;
+    // static generatePasswordUser(req: Request, res: Response) {
+    //     const id = <string>req.params.id;
 
+    //     handleError(res, async () => {
+    //         UserValidator.validateGeneratePasswordUser({ id });
+    //         const password = generatePassword();
+
+    //         await AuthModel.generatePasswordUser(id, password);
+
+    //         res.json({
+    //             message: "Create successfully",
+    //             data: {
+    //                 id: id,
+    //                 password: password
+    //             }
+    //         })
+    //     });
+    // }
+
+    // static getUser(req: Request, res: Response) {
+    //     const id = <string>req.params.id;
+    //     handleError(res, async () => {
+    //         const user = await UserModel.getUser(id);
+    //         if (user) {
+    //             res.json({
+    //                 message: "Ok",
+    //                 data: {
+    //                     user: {
+    //                         id: user.id,
+    //                         email: user.email,
+    //                         fullname: user.fullname,
+    //                         gender: user.gender,
+    //                         role: user.role,
+    //                         avatar: user.avatar
+    //                     }
+    //                 }
+    //             })
+    //         } else {
+    //             res.status(400).json({
+    //                 message: "No exist user",
+    //                 data: {
+    //                     user: null
+    //                 }
+    //             })
+    //         }
+    //     })
+    // }
+
+    static getAllUser(req: Request, res: Response) {
         handleError(res, async () => {
-            UserValidator.validateGeneratePasswordUser({ id });
-            const password = generatePassword();
-
-            await AuthModel.generatePasswordUser(id, password);
-
+            const users = await UserModel.getAuthorityUser();
             res.json({
-                message: "Create successfully",
-                data: {
-                    id: id,
-                    password: password
-                }
-            })
+                message: "Ok",
+                data: { users }
+            });
         });
-    }
-
-    static getUser(req: Request, res: Response) {
-        const id = <string>req.params.id;
-        handleError(res, async () => {
-            const user = await AuthModel.getUser(id);
-            if (user) {
-                res.json({
-                    message: "Ok",
-                    data: {
-                        user: {
-                            id: user.id,
-                            email: user.email,
-                            fullname: user.fullname,
-                            gender: user.gender,
-                            role: user.role,
-                            avatar: user.avatar
-                        }
-                    }
-                })
-            } else {
-                res.status(400).json({
-                    message: "No exist user",
-                    data: {
-                        user: null
-                    }
-                })
-            }
-
-        })
     }
 }

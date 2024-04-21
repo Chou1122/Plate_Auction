@@ -8,6 +8,6 @@ export function checkRole(roles: UserRole[]): F {
         const { role } = res.locals.user;
 
         if (!roles.includes(role)) res.sendStatus(401);
-        next();
+        else next();
     }
 }

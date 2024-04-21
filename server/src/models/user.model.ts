@@ -1,6 +1,6 @@
 import { InputError } from "@/types/controller";
 import { UpdateMeBody, UpdatePasswordMeBody } from "@/validators/auth.validator";
-import { PrismaClient, UserSettings, Users } from "@prisma/client";
+import { PrismaClient, UserRole, UserSettings, Users } from "@prisma/client";
 import { compare, hash } from "bcrypt";
 
 const prisma = new PrismaClient();
@@ -81,7 +81,7 @@ export default class UserModel {
         });
 
         console.log(user);
-        
+
         if (await compare(data.old_password, user.password)) {
             const record = await prisma.users.update({
                 where: { id: id },
@@ -155,5 +155,24 @@ export default class UserModel {
                 setting: null
             }
         }
+    }
+
+    static async getAuthorityUser() {
+        const record = await prisma.users.findMany({
+            where: {
+                role: {
+                    not: UserRole.USER
+                }
+            },
+            select: {
+                email: true,
+                fullname: true,
+                role: true,
+                avatar: true,
+                id: true
+            }
+        });
+
+        return record;
     }
 }

@@ -2,7 +2,7 @@ export interface IUserData {
     avatar: string;
     id: string;
     fullname: string;
-    role: string;
+    role: EUserRole;
     cid: string;
     email: string;
     phone: string;
@@ -21,4 +21,11 @@ export enum EUserGender {
     MALE = "MALE",
     FEMALE = "FEMALE",
     OTHER = "OTHER",
+}
+
+export enum EUserRole {
+    ADMIN = "ADMIN",
+    USER = "USER",
+    PROVIDER = "PROVIDER",
+    AUCTIONEER = "AUCTIONEER",
 }
