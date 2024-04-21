@@ -1,8 +1,8 @@
-import { AuthModel } from "@/models/auth.model";
+import AuthModel from "@/models/auth.model";
 import { Request, Response } from "@/types/controller";
 import { generatePassword } from "@/utils/generate";
 import handleError from "@/utils/handle_error";
-import AuthValidator, { CreateUserBody, DeleteUserBody, UpdateUserBody } from "@/validators/auth.validator";
+import UserValidator, { CreateUserBody, DeleteUserBody, UpdateUserBody } from "@/validators/user.validator";
 import { UserGender } from "@prisma/client";
 
 export default class UserController {
@@ -10,7 +10,7 @@ export default class UserController {
         const data = <CreateUserBody>req.body;
 
         handleError(res, async () => {
-            AuthValidator.validateCreate(data);
+            UserValidator.validateCreate(data);
             const password = generatePassword();
 
             await AuthModel.addUser({
@@ -41,7 +41,7 @@ export default class UserController {
         const data = <DeleteUserBody>req.params;
 
         handleError(res, async () => {
-            AuthValidator.validateDelete(data);
+            UserValidator.validateDelete(data);
             await AuthModel.removeUser(data.id);
             res.sendStatus(200);
         });
@@ -52,7 +52,7 @@ export default class UserController {
         const data = <UpdateUserBody>req.body;
 
         handleError(res, async () => {
-            AuthValidator.validateUpdate(data);
+            UserValidator.validateUpdate(data);
             await AuthModel.updateUser(id, data);
             res.sendStatus(200);
         });
@@ -62,7 +62,7 @@ export default class UserController {
         const id = <string>req.params.id;
 
         handleError(res, async () => {
-            AuthValidator.validateGeneratePasswordUser({ id });
+            UserValidator.validateGeneratePasswordUser({ id });
             const password = generatePassword();
 
             await AuthModel.generatePasswordUser(id, password);

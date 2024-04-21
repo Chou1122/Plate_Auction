@@ -5,7 +5,7 @@ import { hash } from "bcrypt"
 
 const prisma = new PrismaClient();
 
-export class AuthModel {
+export default class AuthModel {
     static async verifyLogin(query: string, password: string): Promise<IUser> {
         const record = await prisma.users.findFirst({
             select: { password: true, fullname: true, role: true, id: true, avatar: true },
@@ -84,63 +84,6 @@ export class AuthModel {
 
     static async forceChangePassword(id: string, password: string) {
         await prisma.users.update({
-            where: {
-                id: id
-            },
-            data: {
-                password: await hash(password, 12)
-            }
-        });
-    }
-
-
-    /**
-     * =================
-     * User Admin
-     * =================
-     */
-    static async addUser(data: Omit<Users, "id">): Promise<any> {
-        const record = await prisma.users.create({
-            data: {
-                cid: data.cid,
-                email: data.email,
-                fullname: data.fullname,
-                password: await hash(data.password, 12),
-                phone: data.phone,
-                role: data.role,
-                address: ""
-            },
-            select: {
-                id: true
-            }
-        });
-
-        return record;
-    }
-
-    static async removeUser(id: string) {
-        await prisma.users.delete({
-            where: {
-                id: id
-            }
-        })
-    }
-
-    static async updateUser(id: string, data: Pick<Users, "email" | "role" | "fullname">) {
-        const record = await prisma.users.update({
-            where: {
-                id: id
-            },
-            data: {
-                email: data.email,
-                role: data.role,
-                fullname: data.fullname
-            }
-        })
-    }
-
-    static async generatePasswordUser(id: string, password: string) {
-        const record = await prisma.users.update({
             where: {
                 id: id
             },

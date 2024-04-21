@@ -5,7 +5,7 @@ import { Router } from "express";
 
 const AuthRouter = Router();
 
-AuthRouter.get("/", [checkJWT], AuthController.isLogin);  // Done
+AuthRouter.get("/", [checkJWT], AuthController.checkLogin);  // Done
 AuthRouter.get("/me", [checkJWT], AuthController.getMe);  // Done
 
 AuthRouter.post("/sendOTP", AuthController.sendOTP);            // Done

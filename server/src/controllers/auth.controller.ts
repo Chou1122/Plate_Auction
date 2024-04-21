@@ -1,13 +1,19 @@
 import config from "@/configs/env";
-import { AuthModel } from "@/models/auth.model";
+import AuthModel from "@/models/auth.model";
 import OTPModel from "@/models/otp.model";
 import TokenModel from "@/models/token.model";
+import UserModel from "@/models/user.model";
+
 import { InputError, Request, Response } from "@/types/controller";
-import { generateOTP, generatePassword } from "@/utils/generate";
+import { generateOTP } from "@/utils/generate";
 import handleError from "@/utils/handle_error";
 import { sendOTP, sendResetPassword } from "@/utils/send_mail";
 import { generateReset, generateToken, setToken } from "@/utils/token";
-import AuthValidator, { CreateUserBody, DeleteUserBody, LoginBody, LogoutBody, OTPBody, RegisterBody, ResetBody, SetPassword, UpdateUserBody } from "@/validators/auth.validator";
+import AuthValidator, {
+    LoginBody, LogoutBody, OTPBody,
+    RegisterBody, ResetBody, SetPassword
+} from "@/validators/auth.validator";
+
 import { UserGender } from "@prisma/client";
 
 export default class AuthController {
@@ -22,34 +28,10 @@ export default class AuthController {
                 await TokenModel.addDevice(user.id, data.device);
                 const token = generateToken({ user, device: data.device, remember: data.remember });
                 setToken(res, data.remember, token);
-                res.end();
+                res.sendStatus(200);
             } else {
                 throw new InputError("Invalid email/phone or password", "email")
             }
-        })
-    }
-
-    static isLogin(req: Request, res: Response) {
-        const user = res.locals.user;
-        res.json({
-            message: "Ok",
-            data: {
-                user
-            }
-        })
-    }
-
-    static getMe(req: Request, res: Response) {
-        const user = res.locals.user;
-
-        handleError(res, async () => {
-            const data = await AuthModel.getUser(user.id);
-            res.json({
-                message: "Ok",
-                data: {
-                    user: data
-                }
-            })
         })
     }
 
@@ -85,22 +67,42 @@ export default class AuthController {
         handleError(res, async () => {
             AuthValidator.validateRegister(data);
             if (await OTPModel.verifyOtp(data.device, data.otp)) {
-                await AuthModel.addUser({
+                await UserModel.addUser({
                     cid: data.cid,
                     email: data.email,
                     password: data.password,
                     phone: data.phone,
                     fullname: data.fullname,
-                    role: "USER",
-                    avatar: "",
-                    address: "",
-                    gender: UserGender.OTHER
                 });
 
                 res.sendStatus(200);
             }
             else throw new InputError("Invalid OTP", "otp", data.otp);
         });
+    }
+
+    static checkLogin(req: Request, res: Response) {
+        const user = res.locals.user;
+        res.json({
+            message: "Ok",
+            data: {
+                user
+            }
+        })
+    }
+
+    static getMe(req: Request, res: Response) {
+        const user = res.locals.user;
+
+        handleError(res, async () => {
+            const data = await AuthModel.getUser(user.id);
+            res.json({
+                message: "Ok",
+                data: {
+                    user: data
+                }
+            })
+        })
     }
 
     /**
@@ -113,13 +115,12 @@ export default class AuthController {
 
         handleError(res, async () => {
             AuthValidator.validateReset(data);
-
             const user = await AuthModel.verifyReset(data.email);
 
             if (user) {
                 const token = generateReset({ user, device: "", remember: false });
                 sendResetPassword(data.email, user.fullname, token.token);
-                res.end();
+                res.sendStatus(200);
             } else {
                 throw new InputError("No user linked with the email", "email")
             }
@@ -141,7 +142,7 @@ export default class AuthController {
         handleError(res, async () => {
             AuthValidator.validateSetPassword(data);
             AuthModel.forceChangePassword(user.id, data.password);
-            res.end();
+            res.sendStatus(200);
         })
     }
 }
