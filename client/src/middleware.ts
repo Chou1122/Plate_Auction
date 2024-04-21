@@ -21,7 +21,7 @@ export default async function middleware(request: NextRequest) {
         });
 
         if (response.status === 200) {
-            const data = await response.json() as IResponse<{ user: any }>;
+            const data = await response.json() as IResponse<{ user: any, device: string }>;
 
             const headers = new Headers(request.headers);
             headers.set('x-user', JSON.stringify(data));

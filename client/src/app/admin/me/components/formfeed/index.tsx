@@ -59,7 +59,7 @@ export default function FormFeedUser({ user, onChange, error }: IProps) {
                     title="Full name"
                     name="fullname"
                     description="Your name may appear around GitHub"
-                    value={user && user.fullname}
+                    value={user ? user.fullname : ""}
                     onChange={handleChange}
                     disabled={!user}
                     error={error}
@@ -68,7 +68,7 @@ export default function FormFeedUser({ user, onChange, error }: IProps) {
                     title="Email"
                     name="email"
                     description="You will need to login in"
-                    value={user && user.email}
+                    value={user ? user.email : ""}
                     onChange={handleChange}
                     disabled={!user}
                     error={error}
@@ -77,7 +77,7 @@ export default function FormFeedUser({ user, onChange, error }: IProps) {
                     title="CID"
                     name="cid"
                     description="Your citizen identification"
-                    value={user && user.cid}
+                    value={user ? user.cid : ""}
                     onChange={handleChange}
                     disabled={!user}
                     maxLength={12}
@@ -87,7 +87,7 @@ export default function FormFeedUser({ user, onChange, error }: IProps) {
                     title="Phone number"
                     name="phone"
                     description="Your phone number you are using"
-                    value={user && user.phone}
+                    value={user ? user.phone : ""}
                     onChange={handleChange}
                     disabled={!user}
                     maxLength={10}
@@ -97,7 +97,7 @@ export default function FormFeedUser({ user, onChange, error }: IProps) {
                     title="Address"
                     name="address"
                     description="Your address"
-                    value={user && user.address}
+                    value={user ? user.address : ""}
                     onChange={handleChange}
                     disabled={!user}
                     error={error}
@@ -106,7 +106,7 @@ export default function FormFeedUser({ user, onChange, error }: IProps) {
                     title="Gender"
                     name="gender"
                     description="Your gender"
-                    value={user && user.gender}
+                    value={user ? user.gender : EUserGender.OTHER}
                     onChange={handleChange}
                     disabled={!user}
                     dataset={GenderDataset}

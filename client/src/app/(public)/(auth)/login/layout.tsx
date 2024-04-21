@@ -5,9 +5,9 @@ import { ReactNode, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 import { FormProvider } from "../contexts/error";
-import FingerprintJS from '@fingerprintjs/fingerprintjs'
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/hooks/auth/auth";
+import { IDeviceInfo, getDeviceInfo } from "@/utils";
 
 interface ILoginData {
     email: string;
@@ -21,6 +21,8 @@ interface IProps {
 
 export default function LoginLayout({ children }: IProps) {
     const [deviceID, setDeviceID] = useState<string>();
+    const [deviceInfo, setDeviceInfo] = useState<IDeviceInfo>();
+
     const router = useRouter()
     const params = useSearchParams();
     const next = params.get("next");
@@ -31,7 +33,8 @@ export default function LoginLayout({ children }: IProps) {
             email: data.email,
             password: data.password,
             remember: data.remember === "on" ? true : false,
-            device: deviceID
+            device: deviceID,
+            device_info: deviceInfo
         });
     }
 
@@ -42,9 +45,12 @@ export default function LoginLayout({ children }: IProps) {
     }
 
     useEffect(() => {
-        FingerprintJS.load()
-            .then(fs => fs.get())
-            .then(f => setDeviceID(f.visitorId))
+        getDeviceInfo().then((info) => {
+            console.log(info);
+            
+            setDeviceInfo(info);
+            setDeviceID(info.device);
+        })
     }, [])
 
     return (
