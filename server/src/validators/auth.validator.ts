@@ -45,6 +45,12 @@ export interface UpdateMeBody {
     setting: Omit<UserSettings, "id" | "uid">
 }
 
+export interface UpdatePasswordMeBody {
+    old_password: string
+    password: string
+    re_password: string
+}
+
 export default class AuthValidator extends Validator {
     static validateLogin(data: LoginBody) {
         this.checkEmail(data.email);
@@ -91,5 +97,12 @@ export default class AuthValidator extends Validator {
         this.checkEmpty(data.user.fullname, "fullname");
         this.checkEmpty(data.user.address, "address");
         this.checkGender(data.user.gender);
+    }
+
+    static validateUpdatePasswordMe(data: UpdatePasswordMeBody) {
+        this.checkPassword(data.password);
+
+        if (data.password !== data.re_password)
+            throw new InputError("Re-type password must be same as password", "re_password", data.re_password);
     }
 }

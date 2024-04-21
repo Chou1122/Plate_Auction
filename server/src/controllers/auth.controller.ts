@@ -12,7 +12,8 @@ import { generateReset, generateToken, setToken } from "@/utils/token";
 import AuthValidator, {
     LoginBody, LogoutBody, OTPBody,
     RegisterBody, ResetBody, SetPassword,
-    UpdateMeBody
+    UpdateMeBody,
+    UpdatePasswordMeBody
 } from "@/validators/auth.validator";
 
 export default class AuthController {
@@ -123,6 +124,17 @@ export default class AuthController {
         handleError(res, async () => {
             AuthValidator.validateUpdateMe(data);
             UserModel.updateMe(user.id, data);
+            res.sendStatus(200);
+        })
+    }
+
+    static updatePasswordMe(req: Request, res: Response) {
+        const user = res.locals.user;
+        const data = <UpdatePasswordMeBody>req.body;
+
+        handleError(res, async () => {
+            AuthValidator.validateUpdatePasswordMe(data);
+            await UserModel.updatePassword(user.id, data);
             res.sendStatus(200);
         })
     }

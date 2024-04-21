@@ -19,6 +19,7 @@ AuthRouter.post("/logout", [checkJWT], AuthController.logout);  // Done
 AuthRouter.get("/", [checkJWT], AuthController.checkLogin);     // Done
 AuthRouter.get("/me", [checkJWT], AuthController.getMe);        // Done
 AuthRouter.put("/me", [checkJWT], AuthController.updateMe);     // Done
+AuthRouter.put("/me/password", [checkJWT], AuthController.updatePasswordMe);     // Done
 
 /**
  * ============

@@ -17,7 +17,7 @@ export default class AuthModel {
             }
         });
 
-        if (record && compare(password, record.password)) {
+        if (record && await compare(password, record.password)) {
             return {
                 fullname: record.fullname,
                 role: record.role,
