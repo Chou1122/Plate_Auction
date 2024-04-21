@@ -1,3 +1,5 @@
+"use client"
+
 import { Section, SectionBody, SectionHeader } from "@/app/components/section";
 import Session from "./components/session";
 

@@ -12,7 +12,7 @@ export default function Session({ currentSession }: IProps) {
     return (
         <div className="rounded-lg border-gray-300 border bg-gray-50 p-5 flex items-start justify-between">
             <div className="flex items-center gap-4">
-                <HiOutlineComputerDesktop size={36} color="gray"/>
+                <HiOutlineComputerDesktop size={36} color="gray" />
 
                 <div>
                     <div className="flex font-semibold text-sm">
@@ -28,7 +28,7 @@ export default function Session({ currentSession }: IProps) {
                 </div>
             </div>
 
-            <Button title="Revoke" color="failure" size="sm"/>
+            <Button title="Revoke" size="xs" color="failure" />
         </div>
     )
 }
