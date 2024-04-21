@@ -1,4 +1,5 @@
-import { PrismaClient, Users } from "@prisma/client";
+import { UpdateMeBody } from "@/validators/auth.validator";
+import { PrismaClient, UserSettings, Users } from "@prisma/client";
 import { hash } from "bcrypt";
 
 const prisma = new PrismaClient();
@@ -44,9 +45,32 @@ export default class UserModel {
             data: {
                 email: data.email,
                 role: data.role,
-                fullname: data.fullname
+                fullname: data.fullname,
             }
         })
+    }
+
+    static async updateMe(id: string, data: UpdateMeBody) {
+        const record = await prisma.users.update({
+            where: {
+                id: id
+            },
+            data: {
+                avatar: data.user.avatar,
+                address: data.user.address,
+                cid: data.user.cid,
+                email: data.user.email,
+                fullname: data.user.fullname,
+                gender: data.user.gender,
+                phone: data.user.phone,
+                setting: {
+                    update: {
+                        displayAttendedPlate: data.setting.displayAttendedPlate,
+                        displayCollectedPlate: data.setting.displayCollectedPlate
+                    }
+                }
+            }
+        });
     }
 
     static async generatePasswordUser(id: string, password: string) {
@@ -58,5 +82,59 @@ export default class UserModel {
                 password: await hash(password, 12)
             }
         });
+    }
+
+    static async getUserSetting(id: string): Promise<UserSettings> {
+        const record = await prisma.userSettings.findFirst({
+            where: {
+                uid: id
+            },
+            select: {
+                displayAttendedPlate: true,
+                displayCollectedPlate: true,
+                id: true,
+                uid: true
+            }
+        })
+        return record
+    }
+
+    static async getUser(id: string): Promise<{
+        user: Omit<Users, "password">,
+        setting: UserSettings
+    }> {
+        const record = await prisma.users.findFirst({
+            select: {
+                avatar: true, fullname: true,
+                role: true, cid: true, email: true,
+                phone: true, id: true, gender: true,
+                address: true, setting: true,
+            },
+            where: {
+                id: id
+            }
+        })
+
+        if (record) {
+            return ({
+                user: {
+                    avatar: record.avatar,
+                    fullname: record.fullname,
+                    role: record.role,
+                    cid: record.cid,
+                    email: record.email,
+                    phone: record.phone,
+                    id: record.id,
+                    address: record.address,
+                    gender: record.gender,
+                },
+                setting: record.setting
+            })
+        } else {
+            return {
+                user: null,
+                setting: null
+            }
+        }
     }
 }

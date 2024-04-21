@@ -10,6 +10,13 @@ export interface IUserData {
     gender: EUserGender
 }
 
+export interface IUSerSetting {
+    id: string;
+    uid: string;
+    displayAttendedPlate: boolean,
+    displayCollectedPlate: boolean
+}
+
 export enum EUserGender {
     MALE = "MALE",
     FEMALE = "FEMALE",

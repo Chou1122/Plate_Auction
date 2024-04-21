@@ -11,10 +11,9 @@ import { sendOTP, sendResetPassword } from "@/utils/send_mail";
 import { generateReset, generateToken, setToken } from "@/utils/token";
 import AuthValidator, {
     LoginBody, LogoutBody, OTPBody,
-    RegisterBody, ResetBody, SetPassword
+    RegisterBody, ResetBody, SetPassword,
+    UpdateMeBody
 } from "@/validators/auth.validator";
-
-import { UserGender } from "@prisma/client";
 
 export default class AuthController {
     static login(req: Request, res: Response) {
@@ -95,13 +94,26 @@ export default class AuthController {
         const user = res.locals.user;
 
         handleError(res, async () => {
-            const data = await AuthModel.getUser(user.id);
+            const { user: userData, setting: userSetting } = await UserModel.getUser(user.id);
+
             res.json({
                 message: "Ok",
                 data: {
-                    user: data
+                    user: userData,
+                    setting: userSetting
                 }
             })
+        })
+    }
+
+    static updateMe(req: Request, res: Response){
+        const user = res.locals.user;
+        const data = <UpdateMeBody>req.body;
+
+        handleError(res, async ()=>{
+            AuthValidator.validateUpdateMe(data);
+            UserModel.updateMe(user.id, data);
+            res.sendStatus(200);
         })
     }
 

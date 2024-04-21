@@ -1,5 +1,6 @@
 import { InputError } from "@/types/controller";
 import Validator from "./base.validator";
+import { UserGender, UserSettings, Users } from "@prisma/client";
 
 export interface LoginBody {
     email: string;
@@ -34,6 +35,11 @@ export interface ResetBody {
 export interface SetPassword {
     password: string;
     re_password: string;
+}
+
+export interface UpdateMeBody {
+    user: Omit<Users, "password" | "id" | "role">,
+    setting: Omit<UserSettings, "id" | "uid">
 }
 
 export default class AuthValidator extends Validator {
@@ -71,5 +77,14 @@ export default class AuthValidator extends Validator {
 
         if (data.password !== data.re_password)
             throw new InputError("Re-type password must be same as password", "re_password", data.re_password);
+    }
+
+    static validateUpdateMe(data: UpdateMeBody) {
+        this.checkCID(data.user.cid);
+        this.checkEmail(data.user.email);
+        this.checkPhone(data.user.phone);
+        this.checkEmpty(data.user.fullname, "fullname");
+        this.checkEmpty(data.user.address, "address");
+        this.checkGender(data.user.gender);
     }
 }

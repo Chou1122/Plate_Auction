@@ -1,12 +1,12 @@
 "use client"
 
-import { IUser } from "@/hooks/auth/auth";
+import { IUserData } from "@/types/user";
 import { Avatar, Badge } from "flowbite-react";
 import Link from "next/link";
 import { GoLightBulb } from "react-icons/go";
 
 interface IProps {
-    user?: IUser
+    user?: IUserData
 }
 
 export default function UserSummary({ user }: IProps) {
@@ -20,7 +20,7 @@ export default function UserSummary({ user }: IProps) {
                         className="font-montserat font-semibold hover:text-green-500 hover:underline">
                         {user.fullname}
                     </Link>
-                    <p className="text-sm text-gray-400 mb-2 -mt-1">nghiacangao@gmail.com</p>
+                    <p className="text-sm text-gray-400 mb-2 -mt-1">{user.email}</p>
                     <Badge size="xs" icon={GoLightBulb} color="warning" className="w-fit px-3 lowercase">{user.role}</Badge>
                 </div>
                 : <div className="space-y-2">
