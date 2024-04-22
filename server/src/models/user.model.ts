@@ -23,7 +23,10 @@ export default class UserModel {
                 }
             },
             select: {
-                id: true
+                id: true,
+                email: true,
+                fullname: true,
+                role: true,
             }
         });
 
@@ -80,8 +83,6 @@ export default class UserModel {
             select: { password: true },
         });
 
-        console.log(user);
-
         if (await compare(data.old_password, user.password)) {
             const record = await prisma.users.update({
                 where: { id: id },
@@ -92,7 +93,7 @@ export default class UserModel {
         } else throw new InputError("Invalid old password", "old_password", data.old_password);
     }
 
-    static async generatePasswordUser(id: string, password: string) {
+    static async setPasswordUser(id: string, password: string) {
         const record = await prisma.users.update({
             where: {
                 id: id

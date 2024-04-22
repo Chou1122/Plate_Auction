@@ -5,7 +5,7 @@ import { ReactNode } from "react";
 const theme: CustomFlowbiteTheme['select'] = {
     field: {
         select: {
-            base: "font-semibold",
+            base: "font-semibold w-full",
             colors: {
                 gray: "bg-gray-50 border-gray-300 focus:border-green-600 focus:ring-green-600 text-green-600"
             }

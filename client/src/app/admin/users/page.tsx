@@ -30,6 +30,18 @@ export default function AccountPage() {
         }
     }
 
+    function handleUpdateData(data: IUserShower) {
+        const tmp: IUserShower[] = [...users, {
+            email: data.email,
+            fullname: data.fullname,
+            id: data.id,
+            role: data.role,
+            avatar: ""
+        }];
+
+        setUsers(tmp);
+    }
+
     useEffect(() => {
         fetchUser().then(data => setUsers(data));
     }, [])
@@ -41,14 +53,13 @@ export default function AccountPage() {
                 Manage accounts
             </SectionHeader>
             <SectionBody>
-                {/* <UserViewer /> */}
 
                 <div className="flex items-center justify-between mb-5">
                     <p>Total 13 members</p>
 
                     <div className="flex items-center gap-3 rounded-lg">
                         <Input type="text" placeholder="Search" icon={TbSearch} noPadding />
-                        <Button title="Add member" icon={TbPlus} size="sm" color="primary" className="h-fit" />
+                        <UserViewer onSuccess={handleUpdateData} />
                     </div>
                 </div>
 

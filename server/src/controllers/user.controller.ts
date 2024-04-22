@@ -14,24 +14,22 @@ export default class UserController {
             UserValidator.validateCreate(data);
             const password = generatePassword();
 
-            await UserModel.addUser({
+            const user = await UserModel.addUser({
                 cid: undefined,
                 phone: undefined,
                 email: data.email,
                 password: password,
                 fullname: data.fullname,
-                role: data.role,
-                avatar: "",
-                address: "",
-                gender: UserGender.OTHER
+                role: data.role
             });
 
             res.json({
                 message: "Create successfully",
                 data: {
-                    email: data.email,
-                    fullname: data.fullname,
-                    role: data.role,
+                    id: user.id,
+                    email: user.email,
+                    fullname: user.fullname,
+                    role: user.role,
                     password: password
                 }
             })
@@ -59,24 +57,23 @@ export default class UserController {
         });
     }
 
-    // static generatePasswordUser(req: Request, res: Response) {
-    //     const id = <string>req.params.id;
+    static rePasswordUser(req: Request, res: Response) {
+        const id = <string>req.params.id;
 
-    //     handleError(res, async () => {
-    //         UserValidator.validateGeneratePasswordUser({ id });
-    //         const password = generatePassword();
+        handleError(res, async () => {
+            UserValidator.validateGeneratePasswordUser({ id });
+            const password = generatePassword();
+            await UserModel.setPasswordUser(id, password);
 
-    //         await AuthModel.generatePasswordUser(id, password);
-
-    //         res.json({
-    //             message: "Create successfully",
-    //             data: {
-    //                 id: id,
-    //                 password: password
-    //             }
-    //         })
-    //     });
-    // }
+            res.json({
+                message: "Create successfully",
+                data: {
+                    id: id,
+                    password: password
+                }
+            })
+        });
+    }
 
     // static getUser(req: Request, res: Response) {
     //     const id = <string>req.params.id;
