@@ -8,19 +8,20 @@ datasource db {
 }
 
 model Users {
-  id        String     @id @default(auto()) @map("_id") @db.ObjectId
-  cid       String     @unique @default(uuid()) @db.String
-  phone     String     @unique @default(uuid()) @db.String
-  email     String     @unique @db.String
-  fullname  String     @db.String
-  password  String     @db.String
-  role      UserRole   @default(USER)
-  avatar    String?    @db.String
-  address   String     @default("") @db.String
-  gender    UserGender @default(OTHER)
-  banned    Boolean    @default(false) @db.Bool
-  ban_until DateTime   @default(now()) @db.Timestamp
-  setting UserSettings?
+  id        String        @id @default(auto()) @map("_id") @db.ObjectId
+  cid       String        @unique @default(uuid()) @db.String
+  phone     String        @unique @default(uuid()) @db.String
+  email     String        @unique @db.String
+  fullname  String        @db.String
+  password  String        @db.String
+  role      UserRole      @default(USER)
+  avatar    String?       @db.String
+  address   String        @default("") @db.String
+  gender    UserGender    @default(OTHER)
+  banned    Boolean       @default(false) @db.Bool
+  ban_until DateTime      @default(now()) @db.Timestamp
+  setting   UserSettings?
+  created   Plates[]
 }
 
 model UserSettings {
@@ -32,8 +33,13 @@ model UserSettings {
 }
 
 model Plates {
-  id     String @id @default(auto()) @map("_id") @db.ObjectId
-  number String @db.String
+  id       String       @id @default(auto()) @map("_id") @db.ObjectId
+  plate    String       @db.String
+  province String       @db.String
+  type     PlateType    @default(PHONGTHUY)
+  vehicle  PlateVehicle @default(CAR)
+  user     Users        @relation(fields: [uid], references: [id])
+  uid      String       @db.ObjectId
 }
 
 model Sessions {
@@ -56,4 +62,19 @@ enum UserGender {
   MALE
   FEMALE
   OTHER
+}
+
+enum PlateType {
+  NGUQUY
+  TUQUY
+  TAMHOA
+  LOCPHAT
+  ONGDIA
+  SANHTIEN
+  PHONGTHUY
+}
+
+enum PlateVehicle {
+  CAR
+  LONG_CAR
 }

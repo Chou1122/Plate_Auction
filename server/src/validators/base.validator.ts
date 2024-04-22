@@ -1,5 +1,5 @@
 import { InputError } from "@/types/controller";
-import { UserGender, UserRole } from "@prisma/client";
+import { PlateType, PlateVehicle, UserGender, UserRole } from "@prisma/client";
 
 export default abstract class Validator {
     protected static checkEmail(email: string) {
@@ -53,6 +53,15 @@ export default abstract class Validator {
     protected static checkGender(gender: string) {
         const values = Object.values(UserGender);
         return values.includes(gender as UserGender);
+    }
+
+    protected static checkPlateType(type: string) {
+        const values = Object.values(PlateType);
+        return values.includes(type as PlateType);
+    }
+    protected static checkPlateVehicle(vehicle: string) {
+        const values = Object.values(PlateVehicle);
+        return values.includes(vehicle as PlateVehicle);
     }
 
     protected static checkDevice(device: string) {

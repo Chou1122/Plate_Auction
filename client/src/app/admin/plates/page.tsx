@@ -1,11 +1,11 @@
 "use client"
 
-import Button from "@/app/components/form/button";
 import Input from "@/app/components/form/input";
 import { Section, SectionBody, SectionHeader } from "@/app/components/section";
-import { TbPlus, TbSearch } from "react-icons/tb";
 import Plate from "./components/plate";
 import Pagination from "@/app/components/form/pagination";
+import { TbSearch, TbTrash } from "react-icons/tb";
+import PlateAdd from "./components/plate_add";
 
 export default function PlatePage() {
     return (
@@ -15,23 +15,30 @@ export default function PlatePage() {
             </SectionHeader>
             <SectionBody>
                 <div className="flex items-center justify-between mb-5">
-                    <p>Total 13 plates</p>
-
-                    <div className="flex items-center gap-3 rounded-lg">
+                    <div className="flex items-center gap-3 rounded-lg justify-end w-full">
                         <Input type="text" placeholder="Search" icon={TbSearch} noPadding />
-                        <Button title="Add member" icon={TbPlus} size="sm" color="primary" className="h-fit" />
+                        <PlateAdd />
                     </div>
                 </div>
 
-                <div className="p-5 bg-gray-50 rounded-lg">
-                    <Plate />
-                    <Plate />
-                    <Plate />
-                    <Plate />
-
-                    <div className="flex justify-end mt-5">
-                        <Pagination totalPages={10} currentPage={9} layout="pagination" showIcons onPageChange={() => { }} />
+                <div className="border border-gray-300 rounded-2xl overflow-hidden">
+                    <div className="w-full bg-gray-50 p-5 flex gap-2 items-center">
+                        <p className="bg-gray-100 px-2 rounded-full text-gray-400 text-sm font-semibold">Total 13 plates</p>
+                        <button className="p-2 rounded-md hover:bg-gray-100">
+                            <TbTrash />
+                        </button>
                     </div>
+
+                    <Plate />
+                    <Plate />
+                    <Plate />
+                </div>
+                <div className="flex justify-end mt-5">
+                    <Pagination
+                        totalPages={10}
+                        currentPage={9}
+                        layout="pagination"
+                        showIcons onPageChange={() => { }} />
                 </div>
             </SectionBody>
         </Section>

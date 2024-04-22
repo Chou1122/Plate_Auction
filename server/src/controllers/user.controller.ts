@@ -119,6 +119,7 @@ export default class UserController {
         handleError(res, async () => {
             const long = 20 * 365 * 24 * 60 * 60 * 1000;
             const ban = await UserModel.setBannedUser(id, long);
+            await TokenModel.revokeAllDevices(id);
             res.json({
                 message: "Ok",
                 data: { ban }
