@@ -30,6 +30,7 @@ export default class TokenModel {
         }
     }
 
+    // Remove specified device
     static async removeDevice(uid: string, deviceID: string) {
         const raw = await redis.get(genKey(uid, NameType.USER_DEVICES));
         const devices = raw ? JSON.parse(raw) : [];
@@ -44,12 +45,29 @@ export default class TokenModel {
         })
     }
 
+    // remove all devices, except this device
     static async revokeDevice(uid: string, deviceID: string) {
         const raw = await redis.get(genKey(uid, NameType.USER_DEVICES));
         const devices = raw ? JSON.parse(raw) : [];
         devices.splice(devices.indexOf(deviceID), 1);
 
         await redis.set(genKey(uid, NameType.USER_DEVICES), JSON.stringify([deviceID]));
+
+        await prisma.sessions.deleteMany({
+            where: {
+                device: {
+                    in: devices
+                }
+            }
+        })
+    }
+
+    // Remove all devices, include this device
+    static async revokeAllDevices(uid: string) {
+        const raw = await redis.get(genKey(uid, NameType.USER_DEVICES));
+        const devices = raw ? JSON.parse(raw) : [];
+
+        await redis.del(genKey(uid, NameType.USER_DEVICES));
 
         await prisma.sessions.deleteMany({
             where: {

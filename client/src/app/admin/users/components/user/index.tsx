@@ -6,6 +6,7 @@ import { Avatar } from "flowbite-react";
 import { TbPasswordUser, TbUserExclamation, TbUserMinus } from "react-icons/tb";
 import { toast } from "react-toastify";
 import UserPass from "../user_pass";
+import UserDel from "../user_del";
 
 const UserRoleSets = [
     { name: "Admin", value: EUserRole.ADMIN },
@@ -23,9 +24,10 @@ export interface IUserShower {
 
 interface IProps {
     data: IUserShower
+    onDelete: (id: string) => void
 }
 
-export default function User({ data }: IProps) {
+export default function User({ data, onDelete }: IProps) {
     const { user } = useAuth();
 
     return (
@@ -53,9 +55,7 @@ export default function User({ data }: IProps) {
                     <TbUserExclamation size={24} />
                 </button>
 
-                <button className="p-2 hover:bg-red-100 hover:text-red-600 rounded-lg text-gray-600">
-                    <TbUserMinus size={24} />
-                </button>
+                <UserDel id={data.id} onSuccess={() => onDelete(data.id)} />
             </div>
         </div>
     )

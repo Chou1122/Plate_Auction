@@ -38,6 +38,11 @@ export default function UserPass({ id }: IProps) {
         }
     }
 
+    function handleCopy() {
+        navigator.clipboard.writeText(password);
+        toast.success("Password copied to clipboard");
+    }
+
     return (
         <>
             <Modal show={show} onClose={() => setShow(false)} size="md">
@@ -54,7 +59,12 @@ export default function UserPass({ id }: IProps) {
                                     className="col-span-1"
                                     color={password === "" ? "primary" : "success"}
                                 />
-                                <Button title="Copy" color="primary" className="h-fit"/>
+                                <Button
+                                    title="Copy"
+                                    color="primary"
+                                    className="h-fit"
+                                    onClick={handleCopy}
+                                />
                             </>}
                     </div>
                 </Modal.Body>

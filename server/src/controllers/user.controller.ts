@@ -1,4 +1,5 @@
 import AuthModel from "@/models/auth.model";
+import TokenModel from "@/models/token.model";
 import UserModel from "@/models/user.model";
 import { Request, Response } from "@/types/controller";
 import { generatePassword } from "@/utils/generate";
@@ -42,6 +43,7 @@ export default class UserController {
         handleError(res, async () => {
             UserValidator.validateDelete(data);
             await UserModel.removeUser(data.id);
+            await TokenModel.revokeAllDevices(data.id);
             res.sendStatus(200);
         });
     }

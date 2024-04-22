@@ -42,6 +42,11 @@ export default function AccountPage() {
         setUsers(tmp);
     }
 
+    function handleDeleteData(id: string) {
+        const tmp = users.filter(user => user.id !== id);
+        setUsers(tmp);
+    }
+
     useEffect(() => {
         fetchUser().then(data => setUsers(data));
     }, [])
@@ -54,9 +59,7 @@ export default function AccountPage() {
             </SectionHeader>
             <SectionBody>
 
-                <div className="flex items-center justify-between mb-5">
-                    <p>Total 13 members</p>
-
+                <div className="flex items-center justify-end mb-5">
                     <div className="flex items-center gap-3 rounded-lg">
                         <Input type="text" placeholder="Search" icon={TbSearch} noPadding />
                         <UserViewer onSuccess={handleUpdateData} />
@@ -67,13 +70,20 @@ export default function AccountPage() {
                     {
                         !loading
                             ? users.map((item, index) =>
-                                <User data={item} key={index.toString()} />
+                                <User data={item} key={index.toString()} onDelete={handleDeleteData} />
                             )
                             : <>
                                 dang tai...
                             </>
                     }
                 </div>
+
+                <div className="w-full flex justify-end">
+                    <p className="mt-3 px-3 bg-gray-100 rounded-full w-fit font-semibold text-sm text-gray-700">
+                        Total {users.length} members
+                    </p>
+                </div>
+
             </SectionBody>
         </Section>
     )

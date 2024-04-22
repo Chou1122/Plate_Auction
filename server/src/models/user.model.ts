@@ -34,10 +34,11 @@ export default class UserModel {
     }
 
     static async removeUser(id: string) {
+        await prisma.userSettings.delete({
+            where: { uid: id }
+        })
         await prisma.users.delete({
-            where: {
-                id: id
-            }
+            where: { id: id }
         })
     }
 
