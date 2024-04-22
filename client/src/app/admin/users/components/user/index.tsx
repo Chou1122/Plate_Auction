@@ -1,12 +1,10 @@
 import Select from "@/app/components/form/select";
-import axios, { IResponse } from "@/configs/axios";
 import { useAuth } from "@/hooks/auth/auth";
 import { EUserRole } from "@/types/user";
 import { Avatar } from "flowbite-react";
-import { TbPasswordUser, TbUserExclamation, TbUserMinus } from "react-icons/tb";
-import { toast } from "react-toastify";
 import UserPass from "../user_pass";
 import UserDel from "../user_del";
+import UserBan, { IBanData } from "../user_ban";
 
 const UserRoleSets = [
     { name: "Admin", value: EUserRole.ADMIN },
@@ -20,15 +18,23 @@ export interface IUserShower {
     id: string;
     avatar?: string;
     email: string;
+    banned: boolean;
+    ban_until: Date;
 }
 
-interface IProps {
+export interface IProps {
     data: IUserShower
-    onDelete: (id: string) => void
+    onDelete: (id: string) => void,
+    onBan: (id: string, data: IBanData) => void
 }
 
-export default function User({ data, onDelete }: IProps) {
+export default function User({ data, onDelete, onBan }: IProps) {
     const { user } = useAuth();
+
+    function formatTime(time: Date) {
+        const date = new Date(time);
+        return `${date.getFullYear()} - ${date.getMonth() + 1} - ${date.getDate()}`
+    }
 
     return (
         <div className="flex justify-between items-center border-b border-gray-200 py-2">
@@ -40,6 +46,9 @@ export default function User({ data, onDelete }: IProps) {
                         <p className="text-white bg-green-400 rounded-full px-2">{data.email}</p>
                         {user.id === data.id &&
                             <p className="text-white bg-yellow-300 rounded-full px-2">You</p>}
+                        {data.banned &&
+                            <p className="text-white bg-red-500 rounded-full px-2">
+                                Banned until: <span className="font-semibold">{formatTime(data.ban_until)}</span></p>}
                     </div>
                     <p className="text-sm text-gray-400">{data.id}</p>
                 </div>
@@ -50,11 +59,7 @@ export default function User({ data, onDelete }: IProps) {
                 <Select noPadding sizing="sm" dataset={UserRoleSets} value={data.role} />
 
                 <UserPass id={data.id} />
-
-                <button className="p-2 hover:bg-yellow-100 hover:text-yellow-600 rounded-lg text-gray-600">
-                    <TbUserExclamation size={24} />
-                </button>
-
+                <UserBan id={data.id} onSuccess={(value) => onBan(data.id, value)} banned={data.banned} />
                 <UserDel id={data.id} onSuccess={() => onDelete(data.id)} />
             </div>
         </div>

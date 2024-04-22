@@ -8,17 +8,19 @@ datasource db {
 }
 
 model Users {
-  id       String        @id @default(auto()) @map("_id") @db.ObjectId
-  cid      String        @unique @default(uuid()) @db.String
-  phone    String        @unique @default(uuid()) @db.String
-  email    String        @unique @db.String
-  fullname String        @db.String
-  password String        @db.String
-  role     UserRole      @default(USER)
-  avatar   String?       @db.String
-  address  String        @default("") @db.String
-  gender   UserGender    @default(OTHER)
-  setting  UserSettings?
+  id        String     @id @default(auto()) @map("_id") @db.ObjectId
+  cid       String     @unique @default(uuid()) @db.String
+  phone     String     @unique @default(uuid()) @db.String
+  email     String     @unique @db.String
+  fullname  String     @db.String
+  password  String     @db.String
+  role      UserRole   @default(USER)
+  avatar    String?    @db.String
+  address   String     @default("") @db.String
+  gender    UserGender @default(OTHER)
+  banned    Boolean    @default(false) @db.Bool
+  ban_until DateTime   @default(now()) @db.Timestamp
+  setting UserSettings?
 }
 
 model UserSettings {

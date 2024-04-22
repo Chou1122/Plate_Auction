@@ -9,6 +9,7 @@ import UserViewer from "./components/user_view";
 import { useEffect, useState } from "react";
 import axios, { IResponse } from "@/configs/axios";
 import { toast } from "react-toastify";
+import { IBanData } from "./components/user_ban";
 
 export default function AccountPage() {
     const [users, setUsers] = useState<IUserShower[]>([]);
@@ -36,7 +37,9 @@ export default function AccountPage() {
             fullname: data.fullname,
             id: data.id,
             role: data.role,
-            avatar: ""
+            avatar: "",
+            banned: false,
+            ban_until: new Date()
         }];
 
         setUsers(tmp);
@@ -44,6 +47,21 @@ export default function AccountPage() {
 
     function handleDeleteData(id: string) {
         const tmp = users.filter(user => user.id !== id);
+        setUsers(tmp);
+    }
+
+    function handleBanData(id: string, value: IBanData) {
+        const tmp = users.map(user => {
+            if (user.id === id) {
+                return {
+                    ...user,
+                    banned: value.banned,
+                    ban_until: value.ban_until
+                }
+            } else {
+                return user;
+            }
+        });
         setUsers(tmp);
     }
 
@@ -70,7 +88,12 @@ export default function AccountPage() {
                     {
                         !loading
                             ? users.map((item, index) =>
-                                <User data={item} key={index.toString()} onDelete={handleDeleteData} />
+                                <User
+                                    data={item}
+                                    key={index.toString()}
+                                    onDelete={handleDeleteData}
+                                    onBan={handleBanData}
+                                />
                             )
                             : <>
                                 dang tai...

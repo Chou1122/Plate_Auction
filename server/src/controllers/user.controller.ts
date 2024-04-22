@@ -1,11 +1,9 @@
-import AuthModel from "@/models/auth.model";
 import TokenModel from "@/models/token.model";
 import UserModel from "@/models/user.model";
 import { Request, Response } from "@/types/controller";
 import { generatePassword } from "@/utils/generate";
 import handleError from "@/utils/handle_error";
 import UserValidator, { CreateUserBody, DeleteUserBody, UpdateUserBody } from "@/validators/user.validator";
-import { UserGender } from "@prisma/client";
 
 export default class UserController {
     static createUser(req: Request, res: Response) {
@@ -112,6 +110,29 @@ export default class UserController {
             res.json({
                 message: "Ok",
                 data: { users }
+            });
+        });
+    }
+
+    static setBanForever(req: Request, res: Response) {
+        const id = <string>req.params.id;
+        handleError(res, async () => {
+            const long = 20 * 365 * 24 * 60 * 60 * 1000;
+            const ban = await UserModel.setBannedUser(id, long);
+            res.json({
+                message: "Ok",
+                data: { ban }
+            });
+        });
+    }
+
+    static unsetBanForever(req: Request, res: Response) {
+        const id = <string>req.params.id;
+        handleError(res, async () => {
+            const ban = await UserModel.setBannedUser(id, 0);
+            res.json({
+                message: "Ok",
+                data: { ban }
             });
         });
     }
