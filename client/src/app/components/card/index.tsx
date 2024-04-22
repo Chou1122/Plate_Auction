@@ -9,11 +9,16 @@ interface IProps {
     like?: boolean,
     enable_blur?: boolean
     pin?: boolean
+    onClick?: () => void
 }
 
-export default function Card({ like, enable_blur, pin }: IProps) {
+export default function Card({ like, enable_blur, pin, onClick }: IProps) {
+    function handleClick(){
+        onClick && onClick();
+    }
     return (
         <div
+            onClick={handleClick}
             className={
                 "bg-gray-50 border-2 hover:border-blue-950 border-gray-200 p-3 rounded-2xl font-montserat hover:shadow-xl transition-all hover:-translate-y-1 group hover:scale-105 " +
                 (enable_blur ? "[&:not(:hover)]:group-hover/card:blur" : "")

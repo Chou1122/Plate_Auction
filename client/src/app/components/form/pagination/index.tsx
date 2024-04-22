@@ -7,10 +7,10 @@ const theme: CustomFlowbiteTheme['pagination'] = {
             active: "rounded-full bg-green-200 text-green-600 font-semibold hover:bg-green-100 hover:text-green-700",
         },
         next: {
-            base: "rounded-lg bg-white py-2 px-3 leading-tight text-gray-500 enabled:hover:bg-cgreen-600  transition-all enabled:hover:text-white border enabled:border-green-600 enabled:hover:ring-1 enabled:hover:ring-green-600 ml-2"
+            base: "rounded-lg bg-white py-2 px-3 leading-tight text-gray-500 enabled:hover:bg-cgreen-600  transition-all enabled:hover:text-white border enabled:border-green-600 enabled:hover:ring-1 enabled:hover:ring-green-600 ml-2 hover:font-semibold"
         },
         previous: {
-            base: "rounded-lg bg-white py-2 px-3 leading-tight text-gray-500 enabled:hover:bg-cgreen-600  transition-all enabled:hover:text-white border enabled:border-green-600 enabled:hover:ring-1 enabled:hover:ring-green-600 mr-2"
+            base: "rounded-lg bg-white py-2 px-3 leading-tight text-gray-500 enabled:hover:bg-cgreen-600  transition-all enabled:hover:text-white border enabled:border-green-600 enabled:hover:ring-1 enabled:hover:ring-green-600 mr-2 hover:font-semibold"
         }
     }
 }
@@ -21,6 +21,6 @@ interface IProps extends PaginationProps {
 
 export default function Pagination(props: IProps) {
     return (
-        <Pagination_ theme={theme} {...props} />
+        <Pagination_ theme={theme} {...props}/>
     )
 }

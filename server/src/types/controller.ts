@@ -1,12 +1,16 @@
+import { UserRole } from "@prisma/client";
 import { Response as _Response, Request as _Request, NextFunction as _NextFunction } from "express"
-
 export interface IUser {
     fullname: string;
-    role: string;
+    role: UserRole
+    id: string;
+    avatar?: string;
 }
 
 export interface ILocalData<T extends IUser = IUser> {
-    user: T
+    user: T,
+    device: string;
+    remember: boolean
 }
 
 export interface IResponseData {

@@ -4,21 +4,45 @@ generator client {
 
 datasource db {
   provider = "mongodb"
-  url = "mongodb://localhost:27017/auction?authSource=admin"
+  url      = "mongodb://localhost:27017/auction?authSource=admin"
 }
 
-model User {
-  id       String   @id @default(auto()) @map("_id") @db.ObjectId
-  phone    String   @unique @db.String
-  email    String   @unique @db.String
-  fullname String   @db.String
-  password String   @db.String
-  role     UserRole @default(USER)
+model Users {
+  id        String     @id @default(auto()) @map("_id") @db.ObjectId
+  cid       String     @unique @default(uuid()) @db.String
+  phone     String     @unique @default(uuid()) @db.String
+  email     String     @unique @db.String
+  fullname  String     @db.String
+  password  String     @db.String
+  role      UserRole   @default(USER)
+  avatar    String?    @db.String
+  address   String     @default("") @db.String
+  gender    UserGender @default(OTHER)
+  banned    Boolean    @default(false) @db.Bool
+  ban_until DateTime   @default(now()) @db.Timestamp
+  setting UserSettings?
 }
 
-model Plate {
+model UserSettings {
+  id                    String  @id @default(auto()) @map("_id") @db.ObjectId
+  user                  Users   @relation(fields: [uid], references: [id])
+  uid                   String  @unique @db.ObjectId
+  displayAttendedPlate  Boolean @default(false) @db.Bool
+  displayCollectedPlate Boolean @default(false) @db.Bool
+}
+
+model Plates {
   id     String @id @default(auto()) @map("_id") @db.ObjectId
   number String @db.String
+}
+
+model Sessions {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  device   String @db.String
+  language String @db.String
+  timezone String @db.String
+  platform String @db.String
+  ip       String @db.String
 }
 
 enum UserRole {
@@ -26,4 +50,10 @@ enum UserRole {
   PROVIDER
   USER
   AUCTIONEER
+}
+
+enum UserGender {
+  MALE
+  FEMALE
+  OTHER
 }

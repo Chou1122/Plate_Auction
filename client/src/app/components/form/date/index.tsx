@@ -1,4 +1,5 @@
 import { CustomFlowbiteTheme, Datepicker, DatepickerProps } from "flowbite-react";
+import Label from "../label";
 
 const theme: CustomFlowbiteTheme['datepicker'] = {
     views: {
@@ -54,8 +55,13 @@ const theme: CustomFlowbiteTheme['datepicker'] = {
 
 interface IProps extends DatepickerProps { }
 
-export default function DatePicker(props: IProps) {
+export default function DatePicker({ name, className, title, ...props }: IProps) {
     return (
-        <Datepicker theme={theme} {...props} />
+        <div className={"mb-3 " + className}>
+            <div className="mb-2 block">
+                <Label name={name} title={title} />
+            </div>
+            <Datepicker theme={theme} {...props} name={name} id={name} />
+        </div>
     )
 }

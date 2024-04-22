@@ -1,6 +1,10 @@
 import { InputError, Response } from "@/types/controller";
 
-export default async function handleError<T = void>(res: Response, func: () => Promise<T>) {
+export default async function handleError<T = void>(
+    res: Response,
+    func: () => Promise<T>,
+    errorCode: number = 500) {
+        
     try {
         await func();
     } catch (error) {
@@ -11,8 +15,12 @@ export default async function handleError<T = void>(res: Response, func: () => P
                 name: error.field,
                 data: error.value
             });
+        } else if (errorCode === 500) {
+            res.status(500).json({
+                message: "Error on server"
+            });
         } else {
-            res.sendStatus(500);
+            res.sendStatus(errorCode);
         }
     }
 }
