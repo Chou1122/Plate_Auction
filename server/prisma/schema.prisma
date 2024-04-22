@@ -34,7 +34,7 @@ model UserSettings {
 
 model Plates {
   id       String       @id @default(auto()) @map("_id") @db.ObjectId
-  plate    String       @db.String
+  plate    String       @unique @db.String
   province String       @db.String
   type     PlateType    @default(PHONGTHUY)
   vehicle  PlateVehicle @default(CAR)

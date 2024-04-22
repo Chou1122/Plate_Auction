@@ -2,10 +2,13 @@ import { IError } from "@/app/(public)/(auth)/contexts/error";
 import Button from "@/app/components/form/button";
 import Input from "@/app/components/form/input";
 import Select from "@/app/components/form/select";
+import axios from "@/configs/axios";
 import { EPlateType, EPlateVehicle } from "@/types/plate";
 import { Modal } from "flowbite-react";
 import { ChangeEvent, useState } from "react";
 import { TbPlus } from "react-icons/tb";
+import { toast } from "react-toastify";
+import { IPlateShower } from "../plate";
 
 export const PlateTypeDataset = [
     { name: "Ngũ quý", value: EPlateType.NGUQUY },
@@ -31,14 +34,19 @@ export const PlateVehicleDataset = [
     { name: "Car", value: EPlateVehicle.CAR },
     { name: "Long car", value: EPlateVehicle.LONG_CAR }]
 
+interface IProps {
+    onSuccess: (data: IPlateShower) => void;
+}
 
-export default function PlateAdd() {
+export default function PlateAdd({ onSuccess }: IProps) {
     const [show, setShow] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<IError>();
+
     const [plate, setPlate] = useState<string>("");
     const [type, setType] = useState<EPlateType>(EPlateType.PHONGTHUY);
-    const [province, setProvince] = useState<string>("");
+    const [province, setProvince] = useState<string>(ProvinceDataset[0].value);
+    const [vehicle, setVehicle] = useState<EPlateVehicle>(EPlateVehicle.CAR);
 
     function handleChange(e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
         const name = e.target.name;
@@ -54,13 +62,35 @@ export default function PlateAdd() {
                 setProvince(e.target.value);
                 break;
             case "vehicle":
-                setProvince(e.target.value);
+                setVehicle(e.target.value as EPlateVehicle);
                 break;
         }
     }
 
     async function handleCreate() {
-        
+        try {
+            const response = await axios.post("/plate", {
+                plate, type, province, vehicle
+            });
+
+            if (response.status === 200) {
+                toast.success("Created");
+                setError({ message: "", name: "" });
+                onSuccess(response.data.data.plate);
+                setShow(false);
+            } else if (response.status === 400) {
+                toast.error(response.data.message);
+                setError({
+                    message: response.data.message,
+                    name: response.data.name,
+                });
+            } else throw new Error(response.data.message);
+
+        } catch (e) {
+            toast.error("Failed to create plate");
+        } finally {
+            setLoading(false);
+        }
     }
 
     return (

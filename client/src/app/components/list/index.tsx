@@ -33,9 +33,9 @@ export default function List() {
             <div className="container mx-auto">
                 <div className="p-3 grid grid-cols-12 gap-3 mt-10 mb-0 cursor-default">
                     <Input type="text" icon={FiSearch} placeholder="Plate number" className="col-span-6 sm:col-span-4 lg:col-span-2" />
-                    <Select icon={GrLocation} className="col-span-6 sm:col-span-4 lg:col-span-2" />
+                    {/* <Select icon={GrLocation} className="col-span-6 sm:col-span-4 lg:col-span-2" />
                     <Select icon={BiCar} className="col-span-6 sm:col-span-4 lg:col-span-2" />
-                    <Select icon={IoLeafOutline} className="col-span-6 sm:col-span-4 lg:col-span-2" />
+                    <Select icon={IoLeafOutline} className="col-span-6 sm:col-span-4 lg:col-span-2" /> */}
                     <DatePicker icon={CgCalendarDates} className="col-span-6 sm:col-span-4 lg:col-span-2" />
                     <DatePicker icon={CgCalendarDates} className="col-span-6 sm:col-span-4 lg:col-span-2" />
                 </div>
@@ -49,22 +49,12 @@ export default function List() {
                     </button>
                 </div>
 
-                <Table onClick={handleItemClick}/>
+                <Table onClick={handleItemClick} />
 
                 <div className="flex flex-row flex-wrap gap-2 md:gap-6 justify-center">
                     {(new Array(20)).fill(0).map((item, index) =>
                         <Card key={index.toString()} onClick={handleItemClick} />
                     )}
-                </div>
-
-                <div className="my-5 py-5 w-full flex justify-center cursor-default">
-                    <Pagination
-                        layout="pagination"
-                        currentPage={currentPage}
-                        totalPages={1000}
-                        onPageChange={onPageChange}
-                        showIcons
-                    />
                 </div>
             </div>
         </>
