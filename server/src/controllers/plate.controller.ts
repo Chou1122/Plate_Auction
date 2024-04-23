@@ -57,8 +57,19 @@ export default class PlateController {
         const id = req.params.id;
 
         handleError(res, async () => {
-            if (user.role === "ADMIN") await PlateModel.forceDeletePlate(id);
+            if (user.role === "ADMIN") await PlateModel.forceDeletePlate([id]);
             else await PlateModel.deletePlate(id, user.id)
+            res.sendStatus(200);
+        })
+    }
+
+    static deleteManyPlate(req: Request, res: Response){
+        const user = res.locals.user;
+        const plates = req.body.plates;
+
+        handleError(res, async ()=>{
+            if (user.role === "ADMIN") await PlateModel.forceDeletePlate(plates);
+            else await PlateModel.deletePlate(plates, user.id)
             res.sendStatus(200);
         })
     }

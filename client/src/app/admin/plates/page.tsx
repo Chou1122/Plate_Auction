@@ -8,6 +8,7 @@ import PlateAdd from "./components/plate_add";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import axios, { IResponse } from "@/configs/axios";
+import { CgLivePhoto } from "react-icons/cg";
 
 export default function PlatePage() {
     const [plates, setPlates] = useState<IPlateShower[]>([]);
@@ -35,6 +36,60 @@ export default function PlatePage() {
         setPlates(tmp);
     }
 
+    function handleChange(id: string, checked: boolean) {
+        if (checked) {
+            setSelected([...selected, id]);
+        } else {
+            setSelected(selected.filter(item => item !== id));
+        }
+    }
+
+    async function handleDelete() {
+        try {
+            setLoading(true);
+
+            const response = await axios.delete<IResponse>("/plate", {
+                data: {
+                    plates: selected
+                }
+            });
+
+            if (response.status === 200) {
+                toast.success("Deleted successfully");
+                const tmp = plates.filter(item => !selected.includes(item.id));
+                setPlates(tmp);
+                setSelected([]);
+            } else throw new Error(response.data.message);
+        } catch (err) {
+            toast.error("Failed to delete")
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    async function makeLive() {
+        try {
+            setLoading(true);
+
+            const response = await axios.post<IResponse>("/plate/live", {
+                data: {
+                    plates: selected
+                }
+            });
+
+            if (response.status === 200) {
+                toast.success("Make live successfully");
+                const tmp = plates.filter(item => !selected.includes(item.id));
+                setPlates(tmp);
+                setSelected([]);
+            } else throw new Error(response.data.message);
+        } catch (err) {
+            toast.error("Failed to make live")
+        } finally {
+            setLoading(false);
+        }
+    }
+
     useEffect(() => {
         fetchUser().then(data => setPlates(data));
     }, [])
@@ -57,8 +112,15 @@ export default function PlatePage() {
                         <p className="bg-gray-100 px-2 rounded-full text-gray-400 text-sm font-semibold">
                             Total <span>{plates.length}</span> plates
                         </p>
-                        <button className="p-2 rounded-md hover:bg-gray-100">
+                        <button
+                            className="p-2 rounded-md hover:bg-gray-100"
+                            onClick={handleDelete} >
                             <TbTrash />
+                        </button>
+                        <button
+                            className="p-2 rounded-md hover:bg-gray-100"
+                            onClick={makeLive} >
+                            <CgLivePhoto />
                         </button>
                     </div>
 
@@ -69,7 +131,7 @@ export default function PlatePage() {
                                     data={item}
                                     index={index}
                                     key={index.toString()}
-                                // onDelete={handleDeleteData}
+                                    onChange={handleChange}
                                 />
                             )
                             : <>

@@ -50,19 +50,23 @@ export default class PlateModel {
         })
     }
 
-    static deletePlate(id: string, uid: string) {
-        return prisma.plates.delete({
+    static deletePlate(ids: string[], uid: string) {
+        return prisma.plates.deleteMany({
             where: {
-                id: id,
+                id: {
+                    in: ids
+                },
                 uid: uid
             }
         })
     }
 
-    static forceDeletePlate(id: string) {
-        return prisma.plates.delete({
+    static forceDeletePlate(ids: string[]) {
+        return prisma.plates.deleteMany({
             where: {
-                id: id
+                id: {
+                    in: ids
+                }
             }
         })
     }

@@ -22,6 +22,7 @@ model Users {
   ban_until DateTime      @default(now()) @db.Timestamp
   setting   UserSettings?
   created   Plates[]
+  History   History[]
 }
 
 model UserSettings {
@@ -40,6 +41,7 @@ model Plates {
   vehicle  PlateVehicle @default(CAR)
   user     Users        @relation(fields: [uid], references: [id])
   uid      String       @db.ObjectId
+  Room     Room?
 }
 
 model Sessions {
@@ -49,6 +51,23 @@ model Sessions {
   timezone String @db.String
   platform String @db.String
   ip       String @db.String
+}
+
+model Room {
+  id      String    @id @default(auto()) @map("_id") @db.ObjectId
+  plate   Plates    @relation(fields: [pid], references: [id])
+  pid     String    @unique @db.ObjectId
+  History History[]
+}
+
+model History {
+  id    String   @id @default(auto()) @map("_id") @db.ObjectId
+  user  Users    @relation(fields: [uid], references: [id])
+  room  Room     @relation(fields: [rid], references: [id])
+  uid   String   @db.ObjectId
+  rid   String   @db.ObjectId
+  value String
+  time  DateTime @db.Timestamp
 }
 
 enum UserRole {
