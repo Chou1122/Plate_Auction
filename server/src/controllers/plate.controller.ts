@@ -63,14 +63,23 @@ export default class PlateController {
         })
     }
 
-    static deleteManyPlate(req: Request, res: Response){
+    static deleteManyPlate(req: Request, res: Response) {
         const user = res.locals.user;
         const plates = req.body.plates;
 
-        handleError(res, async ()=>{
+        handleError(res, async () => {
             if (user.role === "ADMIN") await PlateModel.forceDeletePlate(plates);
             else await PlateModel.deletePlate(plates, user.id)
             res.sendStatus(200);
+        })
+    }
+
+    static createRoomLive(req: Request, res: Response) {
+        const user = res.locals.user;
+        const plates = req.body.plates;
+
+        handleError(res, async () => {
+            await PlateModel.createLive(plates)
         })
     }
 }

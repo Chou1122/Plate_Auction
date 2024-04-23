@@ -6,7 +6,8 @@ export const config = {
         "/",
         "/user/(.*)",
         "/faq/(.*)",
-        "/admin/(.*)"
+        "/admin/(.*)",
+        "/room/(.*)"
     ]
 }
 
@@ -32,7 +33,9 @@ export default async function middleware(request: NextRequest) {
     } catch (error) {
         const pathname = request.nextUrl.pathname;
 
-        if (pathname.startsWith("/admin") || pathname.startsWith("/user"))
+        if (pathname.startsWith("/admin") ||
+            pathname.startsWith("/user") ||
+            pathname.startsWith("/room"))
             return NextResponse.redirect(new URL("/login?next=" + pathname, request.url));
     }
 }

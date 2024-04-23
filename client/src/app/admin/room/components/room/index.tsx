@@ -11,7 +11,7 @@ export default function Room() {
                     <p className="bg-red-100 text-red-500 px-2 rounded-full font-semibold w-fit h-fit text-sm">Live</p>
                 </div>
 
-                <Link href={"/room/"} className="hover:bg-gray-100 rounded-lg p-1 text-gray-400">
+                <Link href={"/room/1234"} className="hover:bg-gray-100 rounded-lg p-1 text-gray-400">
                     <TbView360 size={24} />
                 </Link>
             </div>

@@ -70,4 +70,12 @@ export default class PlateModel {
             }
         })
     }
+
+    static createLive(pids: string[]) {
+        return prisma.room.createMany({
+            data: pids.map(p => ({
+                pid: p
+            }))
+        })
+    }
 }

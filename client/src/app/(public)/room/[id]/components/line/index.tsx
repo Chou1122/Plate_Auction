@@ -1,3 +1,13 @@
+export interface IContent {
+    user: {
+        fullname: string,
+        avatar: string,
+        id: string
+    },
+    value: number,
+    time: number
+}
+
 interface IProps {
     user: {
         fullname: string,

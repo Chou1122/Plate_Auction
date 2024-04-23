@@ -26,7 +26,7 @@ export default function LoginPage() {
             </div>
 
             <div className="flex gap-2 justify-center font-montserat text-sm">
-                <p>You haven't account yet</p>
+                <p>You havent account yet</p>
                 <Link href="/signup" title="Register now" color="green"></Link>
             </div>
         </>
